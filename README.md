@@ -1,0 +1,40 @@
+# Ammora Landing
+
+A responsive landing page prototype for Ammora's onchain liquidity infrastructure. The implementation follows the Ammora waitlist visual system and includes the final desktop and mobile layouts, interactive hero treatment, product infographics, and production-ready image assets.
+
+## Run locally
+
+```bash
+npm ci
+npm run dev
+```
+
+Vite will print the local preview URL in the terminal.
+
+## Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Stack
+
+- React
+- Vite
+- WebGL and CSS for the interactive hero
+- Nunito Sans for display type and Manrope for body copy
+
+## Project structure
+
+- `src/App.jsx` — page sections, content, and interaction logic
+- `src/styles.css` — design tokens, responsive layout, and component styles
+- `public/` — optimized landing-page artwork and UI mockups
+- `index.html` — page metadata and webfont setup
+
+## Frontend handoff notes
+
+- The page is responsive across desktop, tablet, and mobile breakpoints.
+- Motion respects the user's `prefers-reduced-motion` setting.
+- Product values shown in interface mockups are presentational sample data.
+- Replace prototype CTA targets with production routes when those destinations are available.
