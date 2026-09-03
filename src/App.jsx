@@ -6,14 +6,6 @@ const Arrow = ({ diagonal = false }) => (
   </svg>
 )
 
-const Mark = () => (
-  <span className="logo-mark" aria-hidden="true">
-    <span className="mark-orbit mark-one" />
-    <span className="mark-orbit mark-two" />
-    <span className="mark-core" />
-  </span>
-)
-
 const Logo = () => (
   <a className="logo" href="#top" aria-label="Ammora home">
     <img src="/ammora-logo.png" alt="" />
@@ -459,10 +451,19 @@ export default function App() {
         </section>
 
         <section id="protocol" className="preview-section wrap section-pad">
-          <SectionHead eyebrow="MARKET WORKSPACE" title="See the market, not just the pool." copy="Price, liquidity, fees, and positions in one focused workspace." center />
+          <SectionHead eyebrow="MARKET WORKSPACE" title="Launch a market. Grow it in one workspace." copy="Configure price discovery, monitor liquidity, and manage the market after migration." center />
           <div className="market-workspace-mockup">
-            <figure className="market-workspace-image"><img src="/landing-liquidity-ui-hd-transparent.webp" alt="Ammora liquidity market workspace showing pool TVL, volume, fees, and APR" decoding="async" /></figure>
-            <div className="provenance-strip" aria-label="Market data trust signals"><span><i/>Quote <b>current block</b></span><span><i/>Route <b>reviewed</b></span><span><i/>Receipt <b>confirmed</b></span><span><i/>History <b>canonical</b></span></div>
+            <div className="workspace-dual-stage">
+              <figure className="workspace-view workspace-view-markets">
+                <figcaption className="workspace-chip"><i />Markets</figcaption>
+                <div className="workspace-image-frame"><img src="/landing-liquidity-ui-hd-transparent.webp" alt="Ammora markets workspace showing pool TVL, volume, fees, and APR" decoding="async" /></div>
+              </figure>
+              <figure className="workspace-view workspace-view-launchpad">
+                <figcaption className="workspace-chip workspace-chip-launch"><i />Token Launchpad <em>Private Beta</em></figcaption>
+                <div className="workspace-image-frame"><img src="/landing-eth-giwa-ui-4k-mockup-ratio.webp" alt="Ammora token launchpad for an ETH market on GIWA" decoding="async" /></div>
+              </figure>
+            </div>
+            <div className="workspace-summary" aria-label="Ammora workspace capabilities"><span><i/>Launch <b>configured</b></span><span><i/>Discovery <b>onchain</b></span><span><i/>Liquidity <b>active</b></span><span><i/>Markets <b>connected</b></span></div>
           </div>
         </section>
 
