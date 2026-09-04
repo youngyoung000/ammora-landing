@@ -30,7 +30,6 @@
 .points-summary > strong small { font-size: .8rem; letter-spacing: 0; }
 .launch-progress { min-width: 0; padding-right: 0; padding-left: 18px; }
 .launch-progress-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; }
-.launch-progress-head span { display: block; margin-bottom: 6px; color: var(--ds-color-text-muted); font-size: .7rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .launch-progress h2 { font-size: 1.3rem; line-height: 1.05; letter-spacing: -.018em; }
 .launch-progress-head > strong { flex: 0 0 auto; background: var(--ds-brand-gradient); background-clip: text; color: transparent; font-family: var(--ds-font-heading); font-size: 2rem; line-height: .85; }
 .launch-progress-head > strong small { font-size: .78rem; letter-spacing: 0; }
@@ -49,7 +48,7 @@
 .launch-step-card[data-status="current"] > small { background: var(--ds-brand-gradient); background-clip: text; color: transparent; font-weight: 800; }
 .launch-bonus-note { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--ds-color-border-soft); }
 .launch-bonus-note span { color: var(--ds-color-text-muted); font-size: .7rem; }
-.launch-bonus-note strong { background: var(--ds-brand-gradient); background-clip: text; color: transparent; font-size: .78rem; white-space: nowrap; }
+.launch-bonus-note strong { padding: 7px 12px; border-radius: var(--ds-radius-pill); color: #fff; background: var(--ds-brand-gradient); box-shadow: 0 7px 18px color-mix(in srgb,var(--ds-brand-violet) 22%,transparent); font-size: .9rem; line-height: 1; white-space: nowrap; }
 
 .entry-gate { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 18px; margin-inline: -44px; padding: 28px 44px; border-bottom: 1px solid var(--ds-color-border); }
 .entry-index { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--ds-color-border); border-radius: 50%; color: var(--ds-color-text-muted); font-size: var(--ds-text-small); font-weight: 700; }

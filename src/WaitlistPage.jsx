@@ -100,7 +100,7 @@ export default function WaitlistPage() {
               <div className="task-summary">
                 <div className="points-summary"><span>Your Ammora Points</span><strong>200 <small>AP</small></strong></div>
                 <div className="launch-progress">
-                  <div className="launch-progress-head"><div><span>Bonus progress</span><h2>Launch Week completion</h2></div><strong>2 <small>/ 5</small></strong></div>
+                  <div className="launch-progress-head"><h2>Launch Week completion</h2><strong>2 <small>/ 5</small></strong></div>
                   <div className="launch-step-grid" aria-label="Launch Week mission progress">
                     {launchWeekSteps.map((step, index) => <article key={step.label} className="launch-step-card" data-status={step.status}>
                       {step.status === 'completed' ? <span className="launch-step-index is-completed" aria-label="Completed" /> : <span className="launch-step-index">{index + 1}</span>}
