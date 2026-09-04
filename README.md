@@ -22,13 +22,20 @@ npm run preview
 
 - React
 - Vite
-- WebGL and CSS for the interactive hero
+- WebGL and CSS for the interactive hero and liquidity scenes
 - Nunito Sans for display type and Manrope for body copy
 
 ## Project structure
 
 - `src/App.jsx` — page sections, content, and interaction logic
-- `src/styles.css` — design tokens, responsive layout, and component styles
+- `src/WaitlistPage.jsx` — points, missions, referral, leaderboard, and reward page at `/waitlist`
+- `src/LiquidityScene.jsx` — real-time 3D ALMM and ARL WebGL scenes
+- `src/design-system/tokens.css` — shared color, type, spacing, shape, and motion tokens
+- `src/design-system/primitives.css` — reusable layout and component primitives
+- `src/design-system/index.jsx` — theme hook and reusable React components
+- `src/design-system/README.md` — usage rules and a new-page example
+- `src/redesign.css` — landing-specific composition and artwork styles
+- `src/waitlist.css` — waitlist-specific responsive composition
 - `public/` — optimized landing-page artwork and UI mockups
 - `index.html` — page metadata and webfont setup
 

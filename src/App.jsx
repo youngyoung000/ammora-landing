@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import LiquidityScene from './LiquidityScene.jsx'
+import { ThemeRoot, useAmmoraTheme } from './design-system/index.jsx'
+import AmmoraBrand from './components/AmmoraBrand.jsx'
 
 const Arrow = ({ diagonal = false }) => (
   <svg viewBox="0 0 20 20" aria-hidden="true">
@@ -16,7 +19,7 @@ const Pill = ({ children, mint = false }) => (
   <span className={`pill${mint ? ' pill-mint' : ''}`}>{children}</span>
 )
 
-function HeroFluid() {
+function HeroFluid({ dark = false }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -25,6 +28,7 @@ function HeroFluid() {
 
     const gl = canvas.getContext('webgl', {
       alpha: true,
+      premultipliedAlpha: !dark,
       antialias: false,
       depth: false,
       powerPreference: 'high-performance',
@@ -49,6 +53,7 @@ function HeroFluid() {
       uniform vec2 u_resolution;
       uniform vec2 u_pointer;
       uniform float u_time;
+      uniform float u_dark;
 
       float bell(float x, float center, float width) {
         float q = (x - center) / width;
@@ -102,7 +107,14 @@ function HeroFluid() {
         vec2 lightDelta = (uv - u_pointer) * aspect;
         float cursorGlow = exp(-dot(lightDelta, lightDelta) * 8.5);
         float reflection = cursorGlow * exp(-pow((d - 0.012) / 0.055, 2.0));
-        color = mix(color, vec3(1.0), reflection * 0.82);
+        vec3 reflectionColor = mix(vec3(1.0), vec3(0.0), u_dark);
+        color = mix(color, reflectionColor, reflection * 0.58);
+        float highestChannel = max(max(color.r, color.g), color.b);
+        float lowestChannel = min(min(color.r, color.g), color.b);
+        float chroma = highestChannel - lowestChannel;
+        float colorOnly = smoothstep(0.12, 0.24, chroma);
+        vec3 darkColor = color * colorOnly * 0.72;
+        color = mix(color, darkColor, u_dark);
 
         float halo = exp(-pow((d - 0.085) / 0.11, 2.0));
         float alpha = surface * 0.54 + violetBand * 0.48 + halo * 0.18;
@@ -155,6 +167,7 @@ function HeroFluid() {
     const resolutionLocation = gl.getUniformLocation(program, 'u_resolution')
     const pointerLocation = gl.getUniformLocation(program, 'u_pointer')
     const timeLocation = gl.getUniformLocation(program, 'u_time')
+    const darkLocation = gl.getUniformLocation(program, 'u_dark')
     const targetPointer = { x: 0.52, y: 0.55 }
     const currentPointer = { x: 0.52, y: 0.55 }
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -190,6 +203,7 @@ function HeroFluid() {
       gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
       gl.uniform2f(pointerLocation, currentPointer.x, currentPointer.y)
       gl.uniform1f(timeLocation, reduceMotion ? 2.4 : (now - startTime) / 1000)
+      gl.uniform1f(darkLocation, dark ? 1 : 0)
       gl.clearColor(0, 0, 0, 0)
       gl.clear(gl.COLOR_BUFFER_BIT)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
@@ -210,7 +224,7 @@ function HeroFluid() {
       gl.deleteShader(vertexShader)
       gl.deleteShader(fragmentShader)
     }
-  }, [])
+  }, [dark])
 
   return <canvas ref={canvasRef} className="hero-fluid-canvas" />
 }
@@ -412,7 +426,7 @@ const faqItems = [
   ['Is Ammora live on mainnet?', 'Ammora is currently available as a private beta on GIWA Sepolia. Mainnet availability will follow the required deployment, security, and operational release gates.'],
 ]
 
-export default function App() {
+function LegacyLanding() {
   const [activeAction, setActiveAction] = useState('trade')
   const [openFaq, setOpenFaq] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -554,3 +568,199 @@ export default function App() {
     </div>
   )
 }
+
+const valueItems = [
+  { key: 'launch', title: 'Launch', icon: '/market-launch.png', copy: 'Start your market and let real demand set it in motion.' },
+  { key: 'trade', title: 'Trade', icon: '/market-trade.png', copy: 'Give users a simple place to buy and sell from day one.' },
+  { key: 'grow', title: 'Grow', icon: '/market-grow.png', copy: 'Keep liquidity working as the market grows.' },
+  { key: 'share', title: 'Share', icon: '/market-share.png', copy: 'Let projects, partners, and LPs share in the value created.' },
+]
+
+const lifecycleItems = [
+  ['Go live', 'Launch a new asset and open the first trades.', '/lifecycle-go-live.png'],
+  ['Find the market', 'Every buy and sell helps shape the early market.', '/lifecycle-find-market.png'],
+  ['Grow liquidity', 'Move into a market designed for long-term trading.', '/lifecycle-grow-liquidity.png'],
+  ['Keep it moving', 'Trade, manage liquidity, and share fees as activity grows.', '/lifecycle-keep-moving.png'],
+]
+
+const workspaceItems = [
+  {
+    key: 'swap',
+    label: 'Trade',
+    image: '/workspace-swap-cutout.png',
+    darkImage: '/workspace-swap-dark-cutout.png',
+    alt: 'Ammora swap interface showing token amounts, quote, rate, and route details',
+  },
+  {
+    key: 'markets',
+    label: 'Markets',
+    image: '/workspace-markets-cutout.png',
+    darkImage: '/workspace-markets-dark-cutout.png',
+    alt: 'Ammora markets interface showing pools sorted by TVL, volume, fees, and APR',
+  },
+  {
+    key: 'price-range',
+    label: 'Liquidity',
+    image: '/workspace-price-range-cutout.png',
+    darkImage: '/workspace-price-range-dark-cutout.png',
+    alt: 'Ammora liquidity interface for choosing and adjusting an active price range',
+  },
+  {
+    key: 'market-detail',
+    label: 'Launch',
+    image: '/workspace-market-detail-cutout.png',
+    darkImage: '/workspace-market-detail-dark-cutout.png',
+    alt: 'Ammora market interface showing the price chart and recent transactions',
+  },
+]
+
+function NewArrow({ down = false }) {
+  return (
+    <svg className={down ? 'arrow-down' : ''} viewBox="0 0 20 20" aria-hidden="true">
+      <path d={down ? 'M10 3v14m-5-5 5 5 5-5' : 'M3 10h14m-5-5 5 5-5 5'} />
+    </svg>
+  )
+}
+
+function ValueGraphic({ type }) {
+  if (type === 'launch') return (
+    <svg className="value-graphic" viewBox="0 0 260 180" aria-hidden="true">
+      <defs><linearGradient id="valueLaunch" x1="0" y1="1" x2="1" y2="0"><stop stopColor="#7938fb"/><stop offset=".52" stopColor="#49c9f4"/><stop offset="1" stopColor="#66f3ac"/></linearGradient></defs>
+      <circle className="ghost-stroke" cx="130" cy="91" r="60"/><circle className="ghost-stroke dash" cx="130" cy="91" r="42"/>
+      <path className="color-stroke" stroke="url(#valueLaunch)" d="M49 132C73 128 81 109 98 105c17-5 21 9 37 0 17-10 18-33 36-39 15-5 25 4 40-17"/>
+      <circle className="solid-node" cx="49" cy="132" r="7"/><circle className="solid-node mint" cx="211" cy="49" r="7"/>
+    </svg>
+  )
+  if (type === 'trade') return (
+    <svg className="value-graphic" viewBox="0 0 260 180" aria-hidden="true">
+      <defs><linearGradient id="valueTrade" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#7938fb"/><stop offset="1" stopColor="#49c9f4"/></linearGradient></defs>
+      <path className="ghost-stroke" d="M50 96c0-37 31-66 70-66 31 0 49 15 69 43"/><path className="ghost-stroke" d="M210 84c0 37-31 66-70 66-31 0-49-15-69-43"/>
+      <path className="color-stroke" stroke="url(#valueTrade)" d="M44 83c6-30 33-53 68-53h77l-14-14m14 14-14 14M216 97c-6 30-33 53-68 53H71l14 14m-14-14 14-14"/>
+      <circle className="soft-node" cx="130" cy="90" r="24"/><circle className="solid-node" cx="130" cy="90" r="8"/>
+    </svg>
+  )
+  if (type === 'grow') return (
+    <svg className="value-graphic" viewBox="0 0 260 180" aria-hidden="true">
+      <defs><linearGradient id="valueGrow" x1="0" y1="1" x2="0" y2="0"><stop stopColor="#7938fb"/><stop offset=".55" stopColor="#49c9f4"/><stop offset="1" stopColor="#66f3ac"/></linearGradient></defs>
+      <path className="ghost-stroke" d="M34 150h192M34 116h192M34 82h192M34 48h192"/>
+      {[54,78,106,137,112,86,64].map((height,index)=><rect key={height} className="growth-bar" x={45+index*25} y={151-height} width="14" height={height} rx="7" fill="url(#valueGrow)" style={{opacity:.34+index*.08}} />)}
+      <path className="color-stroke" stroke="url(#valueGrow)" d="M43 128C70 123 86 105 109 103c23-3 30-46 53-39 21 6 26 27 54 4"/>
+    </svg>
+  )
+  return (
+    <svg className="value-graphic" viewBox="0 0 260 180" aria-hidden="true">
+      <defs><radialGradient id="valueShare"><stop stopColor="#66f3ac"/><stop offset=".55" stopColor="#49c9f4"/><stop offset="1" stopColor="#7938fb"/></radialGradient></defs>
+      <circle className="ghost-stroke dash" cx="130" cy="89" r="61"/><path className="ghost-stroke" d="M130 89 72 54M130 89l60-35M130 89v62"/>
+      <circle className="share-core" cx="130" cy="89" r="28" fill="url(#valueShare)"/><circle className="soft-node" cx="72" cy="54" r="13"/><circle className="soft-node" cx="190" cy="54" r="13"/><circle className="soft-node" cx="130" cy="151" r="13"/>
+    </svg>
+  )
+}
+
+function AmmoraLanding() {
+  const { theme, toggleTheme } = useAmmoraTheme('dark')
+  const [openFaq, setOpenFaq] = useState(0)
+
+  return (
+    <ThemeRoot id="top" className="new-site" theme={theme}>
+      <header className="new-nav">
+        <div className="new-wrap nav-inner-new">
+          <AmmoraBrand href="#top" />
+          <nav aria-label="Primary navigation"><a href="#how">How it works</a><a href="#markets">Markets</a><a href="#build">Build</a><a href="#docs">Docs</a></nav>
+          <div className="nav-actions-new">
+            <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}><i />{theme === 'dark' ? 'Light' : 'Dark'}</button>
+            <a className="new-button primary small" href="/waitlist">Join Waitlist</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section className="new-hero">
+          <div className="hero-gradient" aria-hidden="true"><HeroFluid key={theme} dark={theme === 'dark'} /><div className="new-grain"/></div>
+          <div className="new-wrap hero-content-new">
+            <div className="hero-meta-new" aria-label="Built on GIWA, GASOK program">
+              <span className="hero-partner-new"><small>Built on</small><img className="giwa-lockup-new" src="/giwa-black.svg" alt="GIWA" /></span>
+              <span className="hero-partner-new"><small>Program</small><span className="gasok-lockup-new"><img src="/gasok.png" alt="GASOK" /></span></span>
+            </div>
+            <p className="hero-kicker-new">Don’t just launch a token.</p>
+            <h1>Launch a market.</h1>
+            <p className="hero-lead-new"><span>From the first buy to everyday trading,</span><span>Ammora helps onchain assets launch, trade, and grow on GIWA.</span></p>
+            <div className="hero-actions-new"><a className="new-button primary" href="/waitlist">Join Waitlist <NewArrow /></a></div>
+          </div>
+          <a className="scroll-cue" href="#proof" aria-label="Scroll to market proof"><span>Explore the system</span><NewArrow down /></a>
+        </section>
+
+        <section id="proof" className="proof-band-new">
+          <div className="new-wrap proof-grid-new">
+            <div><strong>Built for early markets.</strong><span>Launch, test, and integrate with Ammora on GIWA Sepolia.</span></div>
+            <div><b>X,XXX+</b><span>SDK downloads · testnet</span></div>
+            <div><b>0.2.3</b><span>Core SDK</span></div>
+            <div><b className="proof-giwa-new"><img src="/giwa-black.svg" alt="GIWA" /></b><span>Sepolia testnet</span></div>
+          </div>
+        </section>
+
+        <section id="how" className="new-section new-wrap">
+          <div className="new-section-head"><h2>Everything a new market needs.</h2><p>From launch to long-term liquidity, every part of the market stays connected.</p></div>
+          <div className="value-grid-new">{valueItems.map(item=><article key={item.key} className="value-card-new"><h3 className="value-title-new"><img src={item.icon} alt="" aria-hidden="true" />{item.title}</h3><p>{item.copy}</p></article>)}</div>
+          <div className="workspace-carousel-new" aria-label="Ammora product interface previews">
+            <div className="workspace-track-new">
+              {[0, 1].map(loop => (
+                <div key={loop} className="workspace-group-new" aria-hidden={loop === 1 ? 'true' : undefined}>
+                  {workspaceItems.map(item => (
+                    <figure key={`${loop}-${item.key}`} className={`workspace-view-new workspace-${item.key}-new`}>
+                      <figcaption><i />{item.label}</figcaption>
+                      <div><img src={theme === 'dark' ? item.darkImage : item.image} alt={loop === 0 ? item.alt : ''} /></div>
+                    </figure>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="lifecycle-section-new">
+          <div className="lifecycle-ribbon" aria-hidden="true" />
+          <div className="new-wrap">
+            <div className="new-section-head"><h2>A market that keeps going.</h2><p>From the first trade to active liquidity, each stage moves the market forward.</p></div>
+            <div className="lifecycle-grid-new">{lifecycleItems.map(([title,copy,art],index)=><article key={title}><div className="lifecycle-art-new" style={{'--lifecycle-art': `url("${art}")`, '--lifecycle-delay': `${index * 2.8}s`}} aria-hidden="true"/><div className="lifecycle-index-new"><span>{index + 1}</span></div><h3>{title}</h3><p>{copy}</p></article>)}</div>
+          </div>
+        </section>
+
+        <section id="markets" className="new-section new-wrap markets-new">
+          <div className="new-section-head"><h2>Liquidity that fits the market.</h2><p>Choose precision around the current price or a continuous range built for long-term participation.</p></div>
+          <div className="liquidity-grid-cards">
+            <article className="liquidity-card-new"><div className="liquidity-copy-new"><span className="model-pill-new">ALMM · Bin based</span><h3>Stay close to price.</h3><p>Put more liquidity where most trading happens, with precise control over how it is distributed.</p></div><LiquidityScene type="almm" theme={theme}/></article>
+            <article className="liquidity-card-new"><div className="liquidity-copy-new"><span className="model-pill-new">ARL · Range based</span><h3>Cover the right range.</h3><p>Choose the price range where liquidity stays active for longer-term market operation.</p></div><LiquidityScene type="arl" theme={theme}/></article>
+          </div>
+        </section>
+
+        <section id="build" className="developer-new">
+          <div className="developer-glow" aria-hidden="true" />
+          <div className="new-wrap developer-grid-new">
+            <div className="developer-copy-new"><h2>Build with Ammora.</h2><p>Launchpads, wallets, apps, and protocols can connect directly to Ammora markets with the SDK and APIs.</p><div className="hero-actions-new"><a className="new-button inverse-primary" href="#docs">Get the SDK <NewArrow /></a><a className="new-button inverse-secondary" href="#docs">Read Docs</a></div></div>
+            <div id="docs" className="code-panel-new"><div className="code-head-new"><span><i/><i/><i/></span><b>market.ts</b><em>SDK · VERIFIED</em></div><pre><code><span className="code-muted">// Connect to Ammora on GIWA</span>{'\n'}<span className="code-accent">import</span> {'{ Ammora }'} <span className="code-accent">from</span> <span className="code-string">'@ammora/sdk'</span>{'\n\n'}<span className="code-accent">const</span> market = <span className="code-accent">await</span> Ammora.connect({'{'}){'\n'}  chain: <span className="code-string">'GIWA'</span>,{'\n'}  wallet{'\n'}{'}'});{'\n\n'}<span className="code-accent">await</span> market.prepareLaunch(...){'\n'}<span className="code-accent">await</span> market.quoteSwap(...){'\n'}<span className="code-accent">await</span> market.readPositions(...)</code></pre><div className="code-status-new"><i/> Ready to build</div></div>
+          </div>
+        </section>
+
+        <section id="faq" className="faq-new new-section">
+          <div className="new-wrap faq-grid-new">
+            <div className="new-section-head"><h2>Straight answers about Ammora.</h2></div>
+            <div className="faq-list-new">
+              {faqItems.map(([question,answer],index) => (
+                <article key={question} className={openFaq === index ? 'open' : ''}>
+                  <button type="button" aria-expanded={openFaq === index} onClick={() => setOpenFaq(openFaq === index ? -1 : index)}>
+                    <span>{String(index + 1).padStart(2, '0')}</span><strong>{question}</strong><i>{openFaq === index ? '−' : '+'}</i>
+                  </button>
+                  <div className="faq-answer-new"><p>{answer}</p></div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="footer-new"><div className="new-wrap"><AmmoraBrand href="#top"/><div className="footer-links-new"><a href="#how">How it works</a><a href="#markets">Markets</a><a href="#build">Build</a><a href="#docs">Docs</a></div><span>© 2026 Ammora Protocol</span></div></footer>
+    </ThemeRoot>
+  )
+}
+
+export default AmmoraLanding
