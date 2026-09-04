@@ -657,7 +657,7 @@ function ValueGraphic({ type }) {
 }
 
 function AmmoraLanding() {
-  const { theme, toggleTheme } = useAmmoraTheme('dark')
+  const { theme, toggleTheme } = useAmmoraTheme('light')
   const [openFaq, setOpenFaq] = useState(0)
 
   return (

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 const joinClasses = (...classes) => classes.filter(Boolean).join(' ')
 
-export function useAmmoraTheme(defaultTheme = 'dark') {
+export function useAmmoraTheme(defaultTheme = 'light') {
   const [theme, setTheme] = useState(() => {
     if (typeof window === 'undefined') return defaultTheme
     const requestedTheme = new URLSearchParams(window.location.search).get('theme')
