@@ -13,6 +13,14 @@ const dailyMissions = [
   { key: 'vault', title: 'Daily Vault transaction', copy: '', points: '+50 AP', frequency: 'Daily', icon: 'vault', action: 'Open Vault', href: '/#liquidity', secondaryAction: 'Faucet', secondaryHref: 'https://faucet.giwa.io', meta: 'Current Vault TVL · $48.62M' },
 ]
 
+const launchWeekSteps = [
+  { label: 'Follow', points: '+100', status: 'completed' },
+  { label: 'Retweet', points: '+100', status: 'current' },
+  { label: 'Email', points: '+100', status: 'completed' },
+  { label: 'Post', points: '+200', status: 'upcoming' },
+  { label: 'Vault TX', points: '+50', status: 'upcoming' },
+]
+
 const leaders = [
   ['01', '0x71A4…20F9', '8,940'],
   ['02', '0x8BC1…72E0', '8,420'],
@@ -91,7 +99,17 @@ export default function WaitlistPage() {
               {activeTab === 'tasks' ? <div className="tab-panel" role="tabpanel">
               <div className="task-summary">
                 <div className="points-summary"><span>Your Ammora Points</span><strong>200 <small>AP</small></strong></div>
-                <div className="launch-progress"><div><h2>Launch Week completion</h2><strong>2 / 5</strong></div><i><b /></i><p>Complete all five tasks once for the one-time +1,000 AP bonus.</p></div>
+                <div className="launch-progress">
+                  <div className="launch-progress-head"><div><span>Bonus progress</span><h2>Launch Week completion</h2></div><strong>2 <small>/ 5</small></strong></div>
+                  <div className="launch-step-grid" aria-label="Launch Week mission progress">
+                    {launchWeekSteps.map((step, index) => <article key={step.label} className="launch-step-card" data-status={step.status}>
+                      <span className="launch-step-index">{step.status === 'completed' ? '✓' : index + 1}</span>
+                      <strong>{step.label}</strong>
+                      <small>{step.status === 'completed' ? 'Completed' : step.status === 'current' ? 'Next task' : `${step.points} AP`}</small>
+                    </article>)}
+                  </div>
+                  <div className="launch-bonus-note"><span>Complete all five once</span><strong>+1,000 AP</strong></div>
+                </div>
               </div>
 
               <article id="entry" className="entry-gate">
