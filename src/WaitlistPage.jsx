@@ -49,7 +49,7 @@ function MissionRow({ item, onOpenVault }) {
   const isVault = item.key === 'vault'
   return (
     <article className="mission-row" data-status={item.completed ? 'completed' : 'available'}>
-      <span className="mission-icon">{item.completed ? <span className="mission-check" aria-label="Completed">✓</span> : <MissionIcon type={item.icon} />}</span>
+      <span className="mission-icon">{item.completed ? <span className="mission-check" aria-label="Completed" /> : <MissionIcon type={item.icon} />}</span>
       <div className="mission-copy"><div><h3>{item.title}</h3>{item.completed && <span className="mission-state">Completed</span>}</div>{item.copy && <p>{item.copy}</p>}{item.meta && <strong className="mission-meta">{item.meta}</strong>}</div>
       <span className="mission-frequency">{item.frequency}</span>
       <strong>{item.points}</strong>
@@ -103,7 +103,7 @@ export default function WaitlistPage() {
                   <div className="launch-progress-head"><div><span>Bonus progress</span><h2>Launch Week completion</h2></div><strong>2 <small>/ 5</small></strong></div>
                   <div className="launch-step-grid" aria-label="Launch Week mission progress">
                     {launchWeekSteps.map((step, index) => <article key={step.label} className="launch-step-card" data-status={step.status}>
-                      <span className="launch-step-index">{step.status === 'completed' ? '✓' : index + 1}</span>
+                      {step.status === 'completed' ? <span className="launch-step-index is-completed" aria-label="Completed" /> : <span className="launch-step-index">{index + 1}</span>}
                       <strong>{step.label}</strong>
                       <small>{step.status === 'completed' ? 'Completed' : step.status === 'current' ? 'Next task' : `${step.points} AP`}</small>
                     </article>)}
