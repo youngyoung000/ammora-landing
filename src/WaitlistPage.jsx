@@ -49,7 +49,7 @@ function MissionRow({ item, onOpenVault }) {
   const isVault = item.key === 'vault'
   return (
     <article className="mission-row" data-status={item.completed ? 'completed' : 'available'}>
-      <span className="mission-icon">{item.completed ? <span className="mission-check" aria-label="Completed" /> : <MissionIcon type={item.icon} />}</span>
+      <span className="mission-icon">{item.completed ? <span className="mission-check" aria-label="Completed">✓</span> : <MissionIcon type={item.icon} />}</span>
       <div className="mission-copy"><div><h3>{item.title}</h3>{item.completed && <span className="mission-state">Completed</span>}</div>{item.copy && <p>{item.copy}</p>}{item.meta && <strong className="mission-meta">{item.meta}</strong>}</div>
       <span className="mission-frequency">{item.frequency}</span>
       <strong>{item.points}</strong>
