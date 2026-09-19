@@ -8,6 +8,10 @@ function ArrowIcon() {
   return <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" /></svg>
 }
 
+function PointIcon() {
+  return <svg viewBox="0 0 58 58" aria-hidden="true"><defs><linearGradient id="point-icon-gradient" x1="10" y1="8" x2="49" y2="51" gradientUnits="userSpaceOnUse"><stop stopColor="#7938fb"/><stop offset=".5" stopColor="#666dfb"/><stop offset="1" stopColor="#49c9f4"/></linearGradient></defs><path fill="url(#point-icon-gradient)" stroke="none" d="M32.7 7 16.8 31.2h10.7L24.8 51l16.4-25H30.4L32.7 7Z"/></svg>
+}
+
 function ActivityIcon({ type }) {
   const paths = {
     roulette: 'M10 3v2m0 10v2M3 10h2m10 0h2M5 5l1.5 1.5m7 7L15 15m0-10-1.5 1.5m-7 7L5 15M10 7l2 3-2 3-2-3 2-3Z',
@@ -85,7 +89,7 @@ export default function BoostPage() {
               <p>Join special events and extra activities to earn more Ammora Points.</p>
             </div>
             <aside className="boost-account" aria-label="Your Ammora Points summary">
-              <span className="boost-bolt" aria-hidden="true">ϟ</span>
+              <span className="boost-bolt"><PointIcon /></span>
               <div><small>Your Ammora Points</small><strong>200 <b>AP</b></strong></div>
               <i />
               <div><small>Your rank</small><strong>#1,248</strong><em>420 AP to Top 1,000</em></div>
@@ -103,7 +107,7 @@ export default function BoostPage() {
               <div className="roulette-stage" data-spinning={isSpinning}>
                 <span className="roulette-pointer" aria-hidden="true" />
                 <div className="roulette-wheel" style={{ transform: `rotate(${spinAngle}deg)` }}>
-                  {wheelRewards.map((reward, index) => <span className="roulette-label" key={reward} style={{ '--wheel-index': index, '--wheel-counter-angle': `${-(index * 36 + 18)}deg` }}><b>{reward}</b><small>AP</small></span>)}
+                  {wheelRewards.map((reward, index) => <span className="roulette-label" key={reward} style={{ '--wheel-index': index, '--wheel-counter-angle': `${-(index * 36 + 18)}deg`, '--wheel-spin-counter': `${-spinAngle}deg` }}><b>{reward}</b><small>AP</small></span>)}
                   <i className="roulette-center" aria-hidden="true" />
                 </div>
                 <div className="roulette-spin-label" aria-hidden="true"><strong>{spinResult ? `+${spinResult}` : 'SPIN'}</strong><span>{spinResult ? 'AP' : 'Now'}</span></div>
