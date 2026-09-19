@@ -77,13 +77,14 @@ export default function WaitlistPage() {
   const [activeTab, setActiveTab] = useState('tasks')
   const [vaultStep, setVaultStep] = useState(null)
   const [vaultAmount, setVaultAmount] = useState('')
+  const siteBase = window.location.hostname.endsWith('github.io') ? '/ammora-landing' : ''
 
   return (
     <ThemeRoot className="waitlist-page" theme={theme}>
       <header className="waitlist-nav">
         <Container className="waitlist-nav-inner">
           <AmmoraBrand />
-          <nav aria-label="Waitlist navigation"><a href="/">Overview</a><a href="#missions">Missions</a><a href="#leaderboard">Leaderboard</a></nav>
+          <nav aria-label="Waitlist navigation"><a href="/">Overview</a><a href="#missions">Missions</a><a href="#leaderboard">Leaderboard</a><a href={`${siteBase}/waitlist/boost`}>Boost</a></nav>
           <div className="waitlist-nav-actions">
             <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}><i />{theme === 'dark' ? 'Light' : 'Dark'}</button>
             <Button size="sm" href="#entry">0x7A…20F9</Button>
