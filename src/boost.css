@@ -36,17 +36,25 @@
 .roulette-stage { position: relative; width: min(100%,510px); aspect-ratio: 1; display: grid; place-items: center; align-self: center; margin-top: 8px; filter: drop-shadow(0 14px 24px rgba(73,201,244,.16)); }
 .roulette-stage::before { content: ""; position: absolute; z-index: 0; inset: 3.4%; border: 1px dashed color-mix(in srgb,var(--ds-brand-indigo) 36%,transparent); border-radius: 50%; opacity: .62; }
 .roulette-stage::after { content: ""; position: absolute; z-index: 0; inset: 7%; border: 1px solid color-mix(in srgb,var(--ds-color-raised) 72%,transparent); border-radius: 50%; pointer-events: none; }
-.roulette-wheel { position: relative; width: 88%; height: 88%; border: 6px solid color-mix(in srgb,var(--ds-brand-cyan) 48%,var(--ds-color-border)); border-radius: 50%; background: conic-gradient(from -18deg,rgba(121,56,251,.18) 0deg 36deg,rgba(73,201,244,.17) 36deg 72deg,rgba(102,243,172,.2) 72deg 108deg,rgba(102,109,251,.15) 108deg 144deg,rgba(73,201,244,.19) 144deg 180deg,rgba(121,56,251,.14) 180deg 216deg,rgba(102,243,172,.18) 216deg 252deg,rgba(102,109,251,.2) 252deg 288deg,rgba(73,201,244,.14) 288deg 324deg,rgba(102,243,172,.18) 324deg 360deg); box-shadow: inset 0 0 0 4px color-mix(in srgb,var(--ds-color-raised) 75%,transparent),0 0 0 2px color-mix(in srgb,var(--ds-brand-violet) 38%,transparent),0 0 34px rgba(73,201,244,.24); transition: transform 1.4s cubic-bezier(.16,.78,.18,1); }
+.roulette-wheel { position: relative; width: 88%; height: 88%; border: 6px solid color-mix(in srgb,var(--ds-brand-cyan) 48%,var(--ds-color-border)); border-radius: 50%; background: conic-gradient(from -18deg,rgba(121,56,251,.18) 0deg 36deg,rgba(73,201,244,.17) 36deg 72deg,rgba(102,243,172,.2) 72deg 108deg,rgba(102,109,251,.15) 108deg 144deg,rgba(73,201,244,.19) 144deg 180deg,rgba(121,56,251,.14) 180deg 216deg,rgba(102,243,172,.18) 216deg 252deg,rgba(102,109,251,.2) 252deg 288deg,rgba(73,201,244,.14) 288deg 324deg,rgba(102,243,172,.18) 324deg 360deg); box-shadow: inset 0 0 0 4px color-mix(in srgb,var(--ds-color-raised) 75%,transparent),0 0 0 2px color-mix(in srgb,var(--ds-brand-violet) 38%,transparent),0 0 34px rgba(73,201,244,.24); transition: transform 2.2s cubic-bezier(.1,.68,.13,1); }
 .roulette-wheel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: repeating-conic-gradient(from -18deg,transparent 0deg 35.35deg,color-mix(in srgb,var(--ds-color-raised) 88%,transparent) 35.35deg 36deg); }
-.roulette-label { --wheel-angle: calc(var(--wheel-index) * 36deg + 18deg); position: absolute; z-index: 1; top: 50%; left: 50%; display: flex; flex-direction: column; align-items: center; transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-180px,-15vw,-118px)) rotate(var(--wheel-counter-angle)) rotate(var(--wheel-spin-counter)); color: var(--ds-color-text); transition: transform 1.4s cubic-bezier(.16,.78,.18,1); }
-.roulette-label b { font-family: var(--ds-font-heading); font-size: clamp(.82rem,1.55vw,1.3rem); line-height: 1; }
-.roulette-label small { margin-top: 3px; color: var(--ds-color-text-muted); font-size: .58rem; font-weight: 700; }
+.roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .46s; transition-timing-function: cubic-bezier(.16,.9,.28,1.42); }
+.roulette-label { --wheel-angle: calc(var(--wheel-index) * 36deg + 18deg); position: absolute; z-index: 1; top: 50%; left: 50%; min-width: 34px; min-height: 28px; display: grid; place-items: center; transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-174px,-14.5vw,-116px)); border-radius: var(--ds-radius-pill); color: color-mix(in srgb,var(--ds-color-text) 84%,var(--ds-brand-indigo)); }
+.roulette-label b { font-family: var(--ds-font-heading); font-size: clamp(.86rem,1.5vw,1.2rem); line-height: 1; }
+.roulette-label[data-tier="high"] b { font-size: clamp(.96rem,1.68vw,1.34rem); font-weight: 850; }
+.roulette-label[data-tier="top"] { color: var(--ds-brand-indigo); text-shadow: 0 2px 12px color-mix(in srgb,var(--ds-brand-cyan) 46%,transparent); }
+.roulette-label[data-tier="top"] b { font-size: clamp(1.08rem,1.84vw,1.48rem); font-weight: 900; }
+.roulette-label[data-selected="true"] { color: #fff; background: var(--ds-brand-gradient); box-shadow: 0 0 0 4px color-mix(in srgb,var(--ds-color-raised) 70%,transparent),0 7px 20px color-mix(in srgb,var(--ds-brand-indigo) 42%,transparent); animation: rouletteRewardPop .62s cubic-bezier(.2,1.65,.3,1) both; }
 .roulette-center { position: absolute; z-index: 2; inset: 35%; border: 5px solid color-mix(in srgb,var(--ds-brand-violet) 26%,var(--ds-color-raised)); border-radius: 50%; background: var(--ds-color-raised); box-shadow: 0 7px 20px rgba(102,109,251,.22),inset 0 0 0 1px color-mix(in srgb,var(--ds-brand-cyan) 18%,transparent); }
 .roulette-pointer { position: absolute; z-index: 4; top: 2.8%; left: 50%; width: 42px; height: 48px; transform: translateX(-50%); border-radius: 9px 9px 22px 22px; background: linear-gradient(155deg,var(--ds-brand-violet),var(--ds-brand-indigo),var(--ds-brand-cyan)); clip-path: polygon(0 0,100% 0,50% 100%); filter: drop-shadow(0 4px 7px rgba(102,109,251,.38)); }
 .roulette-spin-label { position: absolute; z-index: 5; inset: 39%; display: grid; place-content: center; text-align: center; pointer-events: none; }
-.roulette-spin-label strong { font-family: var(--ds-font-heading); font-size: clamp(1.15rem,2.4vw,1.7rem); line-height: 1; }
-.roulette-spin-label span { margin-top: 6px; color: var(--ds-color-text-muted); font-size: .75rem; }
-.roulette-stage[data-spinning="true"] .roulette-spin-label { opacity: .5; }
+.roulette-spin-label strong { color: var(--ds-color-text-muted); font-family: var(--ds-font-heading); font-size: clamp(1.35rem,2.7vw,2rem); font-weight: 900; line-height: 1; letter-spacing: -.04em; }
+.roulette-spin-label strong small { margin-left: 2px; font-size: .42em; letter-spacing: 0; }
+.roulette-stage[data-phase="spinning"] .roulette-spin-label, .roulette-stage[data-phase="settling"] .roulette-spin-label { opacity: .38; transform: scale(.92); }
+.roulette-stage[data-phase="spinning"] .roulette-pointer { transform-origin: 50% 8%; animation: roulettePointerTick .13s ease-in-out infinite alternate; }
+.roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultPop .62s cubic-bezier(.2,1.65,.3,1) both; }
+.roulette-stage[data-result="true"] .roulette-spin-label strong { background: var(--ds-brand-gradient); background-clip: text; color: transparent; filter: drop-shadow(0 5px 14px color-mix(in srgb,var(--ds-brand-indigo) 24%,transparent)); }
+.roulette-stage[data-result="true"]::before { animation: rouletteWinRing 1.15s ease-out both; }
 
 .roulette-control { min-height: 96px; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--ds-color-border); border-radius: 16px; }
 .roulette-ticket { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--ds-color-surface); }
@@ -106,7 +114,7 @@
   .boost-nav-inner { grid-template-columns: 1fr auto; }
   .boost-hero { grid-template-columns: 1fr; gap: 28px; }
   .boost-grid { grid-template-columns: 1fr; }
-  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-190px,-34vw,-120px)) rotate(var(--wheel-counter-angle)) rotate(var(--wheel-spin-counter)); }
+  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-184px,-33vw,-118px)); }
 }
 
 @media (max-width: 640px) {
@@ -124,7 +132,7 @@
   .roulette-panel, .boost-activities-panel { padding: 20px; }
   .roulette-heading h2 { font-size: 1.8rem; }
   .roulette-stage { width: calc(100% + 10px); margin-left: -5px; }
-  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-140px,-34vw,-96px)) rotate(var(--wheel-counter-angle)) rotate(var(--wheel-spin-counter)); }
+  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-134px,-32vw,-91px)); }
   .roulette-control { grid-template-columns: 42px 1fr; }
   .roulette-ticket { width: 42px; height: 42px; }
   .roulette-control button { grid-column: 1/-1; width: 100%; }
@@ -139,4 +147,27 @@
 
 @media (prefers-reduced-motion: reduce) {
   .roulette-wheel { transition-duration: .01ms; }
+  .roulette-pointer, .roulette-spin-label, .roulette-label { animation: none !important; }
+}
+
+@keyframes roulettePointerTick {
+  from { transform: translateX(-50%) rotate(-6deg); }
+  to { transform: translateX(-50%) rotate(6deg); }
+}
+
+@keyframes rouletteResultPop {
+  0% { opacity: .2; transform: scale(.72); }
+  62% { opacity: 1; transform: scale(1.13); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rouletteRewardPop {
+  0% { opacity: .4; scale: .7; }
+  68% { opacity: 1; scale: 1.18; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes rouletteWinRing {
+  0% { opacity: .9; scale: .9; }
+  100% { opacity: .18; scale: 1.08; }
 }

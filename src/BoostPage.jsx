@@ -44,7 +44,8 @@ export default function BoostPage() {
   const [spinCount, setSpinCount] = useState(0)
   const [spinAngle, setSpinAngle] = useState(0)
   const [spinResult, setSpinResult] = useState(null)
-  const [isSpinning, setIsSpinning] = useState(false)
+  const [spinPhase, setSpinPhase] = useState('idle')
+  const isSpinning = spinPhase !== 'idle'
 
   const siteBase = useMemo(() => window.location.hostname.endsWith('github.io') ? '/ammora-landing' : '', [])
 
@@ -53,13 +54,18 @@ export default function BoostPage() {
     const rewardIndex = Math.floor(Math.random() * wheelRewards.length)
     const reward = wheelRewards[rewardIndex]
     const landingAngle = 360 - (rewardIndex * 36 + 18)
-    setSpinAngle(current => current + 1440 + landingAngle)
-    setIsSpinning(true)
+    const finalAngle = 1800 + landingAngle
+    setSpinPhase('spinning')
+    setSpinAngle(finalAngle + 9)
+    window.setTimeout(() => {
+      setSpinPhase('settling')
+      setSpinAngle(finalAngle)
+    }, 2200)
     window.setTimeout(() => {
       setSpinResult(reward)
       setSpinCount(1)
-      setIsSpinning(false)
-    }, 1400)
+      setSpinPhase('idle')
+    }, 2660)
   }
 
   return (
@@ -104,13 +110,13 @@ export default function BoostPage() {
                 <p>Try your luck and win <strong>10–100 AP.</strong> Every result is fixed in 10-point increments.</p>
               </div>
 
-              <div className="roulette-stage" data-spinning={isSpinning}>
+              <div className="roulette-stage" data-phase={spinPhase} data-result={spinResult ? 'true' : 'false'}>
                 <span className="roulette-pointer" aria-hidden="true" />
                 <div className="roulette-wheel" style={{ transform: `rotate(${spinAngle}deg)` }}>
-                  {wheelRewards.map((reward, index) => <span className="roulette-label" key={reward} style={{ '--wheel-index': index, '--wheel-counter-angle': `${-(index * 36 + 18)}deg`, '--wheel-spin-counter': `${-spinAngle}deg` }}><b>{reward}</b><small>AP</small></span>)}
+                  {wheelRewards.map((reward, index) => <span className="roulette-label" key={reward} data-tier={reward >= 80 ? 'top' : reward >= 50 ? 'high' : 'base'} data-selected={spinResult === reward ? 'true' : 'false'} style={{ '--wheel-index': index }}><b>{reward}</b></span>)}
                   <i className="roulette-center" aria-hidden="true" />
                 </div>
-                <div className="roulette-spin-label" aria-hidden="true"><strong>{spinResult ? `+${spinResult}` : 'SPIN'}</strong><span>{spinResult ? 'AP' : 'Now'}</span></div>
+                <div className="roulette-spin-label" aria-hidden="true"><strong>{String(spinResult ?? 0).padStart(2, '0')}<small>AP</small></strong></div>
               </div>
 
               <div className="roulette-control">
