@@ -49,7 +49,7 @@ function RouletteWheelArt({ selectedReward }) {
       <circle cx="250" cy="250" r="224" fill="none" stroke="#d9f7ff" strokeOpacity=".34" strokeWidth="2" />
       {wheelRewards.map((reward, index) => {
         const path = wheelSegmentPath(index)
-        const tier = reward >= 80 ? 'top' : reward >= 50 ? 'high' : 'base'
+        const tier = reward === 100 ? 'max' : reward >= 80 ? 'top' : reward >= 50 ? 'high' : 'base'
         const selected = selectedReward === reward
         return <g key={reward}>
           <path className={`premium-segment${selected ? ' is-selected' : ''}`} d={path} fill={`url(#premium-segment-${palettes[index]})`} filter="url(#premium-segment-shadow)" />
@@ -110,7 +110,7 @@ export default function BoostPage() {
     const landingAngle = 360 - rewardIndex * 36
     const finalAngle = 1800 + landingAngle
     setSpinPhase('spinning')
-    setSpinAngle(finalAngle + 9)
+    setSpinAngle(finalAngle + 5)
     window.setTimeout(() => {
       setSpinPhase('settling')
       setSpinAngle(finalAngle)
@@ -119,7 +119,7 @@ export default function BoostPage() {
       setSpinResult(reward)
       setSpinCount(1)
       setSpinPhase('idle')
-    }, 2660)
+    }, 2580)
   }
 
   return (
@@ -177,7 +177,7 @@ export default function BoostPage() {
               <div className="roulette-control">
                 <span className="roulette-ticket" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8a2 2 0 0 0 0 4v4h16v-4a2 2 0 0 0 0-4V4H4v4Z" /></svg></span>
                 <div><small>Remaining spins</small><strong>{1 - spinCount} <b>/ 1</b></strong><span>Resets every day at 00:00 UTC</span></div>
-                <button type="button" onClick={spin} disabled={spinCount >= 1 || isSpinning}>{isSpinning ? 'Spinning…' : spinResult ? `Won +${spinResult} AP` : 'Spin now'}<ArrowIcon /></button>
+                <button className={spinResult ? 'is-complete' : ''} type="button" onClick={spin} disabled={spinCount >= 1 || isSpinning}>{isSpinning ? 'Spinning…' : spinResult ? `Won +${spinResult} AP` : 'Spin now'}<ArrowIcon /></button>
               </div>
               <p className="roulette-footnote"><i>i</i> Rewards are added to your Ammora Points instantly.</p>
             </article>

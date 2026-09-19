@@ -43,14 +43,17 @@
 .roulette-wheel-art { width: 100%; height: 100%; overflow: visible; }
 .premium-segment { stroke: rgba(174,221,255,.3); stroke-width: 1.4; transition: filter .35s ease,opacity .35s ease; }
 .premium-segment-gloss { pointer-events: none; mix-blend-mode: screen; }
-.premium-segment.is-selected { stroke: #d6fbff; stroke-width: 3; filter: url(#premium-selected-glow); }
+.premium-segment.is-selected { stroke: #fff; stroke-width: 3; filter: drop-shadow(0 0 8px rgba(73,201,244,.82)); }
 .roulette-wheel-number rect { opacity: 0; filter: url(#premium-selected-glow); }
 .roulette-wheel-number text { fill: #eaf1ff; stroke: none; font-family: var(--ds-font-heading); font-size: 21px; font-weight: 850; letter-spacing: -.7px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.72)); }
 .roulette-wheel-number.tier-high text { fill: url(#premium-number-high); font-size: 24px; font-weight: 900; }
 .roulette-wheel-number.tier-top text { fill: url(#premium-number-high); font-size: 27px; font-weight: 950; filter: drop-shadow(0 0 7px rgba(73,201,244,.48)); }
-.roulette-wheel-number.is-selected rect { opacity: 1; animation: rouletteRewardPop .62s cubic-bezier(.2,1.65,.3,1) both; }
-.roulette-wheel-number.is-selected text { fill: #fff; font-size: 25px; animation: rouletteTextPop .62s cubic-bezier(.2,1.65,.3,1) both; }
-.roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .46s; transition-timing-function: cubic-bezier(.16,.9,.28,1.42); }
+.roulette-wheel-number.tier-max rect { opacity: 1; fill: #fff; filter: drop-shadow(0 0 10px rgba(73,201,244,.52)); }
+.roulette-wheel-number.tier-max text { fill: #080a14; font-size: 29px; font-weight: 950; filter: none; }
+.roulette-wheel-number.is-selected rect { opacity: 1; fill: #fff; filter: drop-shadow(0 0 11px rgba(73,201,244,.72)); animation: roulettePrizeReveal .46s ease-out both; }
+.roulette-wheel-number.is-selected text { fill: #080a14; font-size: 26px; filter: none; animation: roulettePrizeReveal .46s ease-out both; }
+.roulette-wheel-number.tier-max.is-selected text { font-size: 29px; }
+.roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .34s; transition-timing-function: cubic-bezier(.2,.8,.3,1); }
 .roulette-center { position: absolute; z-index: 2; inset: 35%; border: 3px solid rgba(118,101,255,.85); border-radius: 50%; background: radial-gradient(circle at 38% 27%,#24264c 0%,#101329 45%,#050713 100%); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.34),0 0 28px rgba(121,56,251,.46),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.13); }
 .roulette-pointer { position: absolute; z-index: 6; top: 1.2%; left: 50%; width: 56px; height: 64px; transform: translateX(-50%); background: linear-gradient(155deg,#17152e 0%,#7b4cff 48%,#2fd2ef 100%); clip-path: polygon(8% 0,92% 0,50% 100%); filter: drop-shadow(0 0 6px rgba(255,255,255,.62)) drop-shadow(0 0 15px rgba(121,56,251,.8)); }
 .roulette-pointer::before { content: ""; position: absolute; inset: 7px 10px 14px; background: linear-gradient(180deg,#fff 0%,#aef7ff 42%,#9b72ff 100%); clip-path: polygon(5% 0,95% 0,50% 100%); }
@@ -60,9 +63,10 @@
 .roulette-spin-label strong small { margin-left: 2px; font-size: .42em; letter-spacing: 0; }
 .roulette-stage[data-phase="spinning"] .roulette-spin-label, .roulette-stage[data-phase="settling"] .roulette-spin-label { opacity: .38; transform: scale(.92); }
 .roulette-stage[data-phase="spinning"] .roulette-pointer { transform-origin: 50% 8%; animation: roulettePointerTick .13s ease-in-out infinite alternate; }
-.roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultPop .62s cubic-bezier(.2,1.65,.3,1) both; }
-.roulette-stage[data-result="true"] .roulette-spin-label strong { background: linear-gradient(110deg,#b994ff 0%,#79a8ff 34%,#6fe4ff 68%,#83ffd2 100%); background-clip: text; color: transparent; filter: drop-shadow(0 0 8px rgba(73,201,244,.34)) drop-shadow(0 5px 14px rgba(102,109,251,.28)); }
-.roulette-stage[data-result="true"]::before { animation: rouletteWinRing 1.15s ease-out both; }
+.roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultReveal .46s ease-out both; }
+.roulette-stage[data-result="true"] .roulette-spin-label strong { color: #fff; text-shadow: 0 0 10px rgba(73,201,244,.45),0 3px 10px rgba(0,0,0,.8); }
+.roulette-stage[data-result="true"] .roulette-spin-label strong small { color: #66f3ac; text-shadow: 0 0 8px rgba(102,243,172,.5); }
+.roulette-stage[data-result="true"] .roulette-center { border-color: rgba(111,228,255,.94); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.56),0 0 24px rgba(73,201,244,.42),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.16); transition: border-color .3s ease,box-shadow .3s ease; }
 
 .roulette-control { min-height: 96px; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--ds-color-border); border-radius: 16px; }
 .roulette-ticket { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--ds-color-surface); }
@@ -73,6 +77,7 @@
 .roulette-control button, .yapping-cta { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding-inline: 22px; border-radius: var(--ds-radius-pill); color: var(--ds-color-on-action); background: var(--ds-color-action); cursor: pointer; font-size: .78rem; font-weight: 800; }
 .roulette-control button svg, .yapping-cta svg { width: 17px; height: 17px; }
 .roulette-control button:disabled { cursor: default; opacity: .5; }
+.roulette-control button.is-complete { color: #080a14; background: #fff; box-shadow: 0 0 0 1px rgba(73,201,244,.26),0 6px 18px rgba(73,201,244,.16); opacity: 1; }
 .roulette-footnote { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 13px 16px; border: 1px solid var(--ds-color-border-soft); border-radius: 13px; color: var(--ds-color-text-muted); font-size: .72rem; }
 .roulette-footnote i { width: 18px; height: 18px; display: grid; place-items: center; border: 1px solid var(--ds-color-border); border-radius: 50%; font-size: .62rem; font-style: normal; font-weight: 800; }
 
@@ -163,25 +168,12 @@
   to { transform: translateX(-50%) rotate(6deg); }
 }
 
-@keyframes rouletteResultPop {
-  0% { opacity: .2; transform: scale(.72); }
-  62% { opacity: 1; transform: scale(1.13); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes roulettePrizeReveal {
+  from { opacity: 0; scale: .9; }
+  to { opacity: 1; scale: 1; }
 }
 
-@keyframes rouletteRewardPop {
-  0% { opacity: .4; scale: .7; }
-  68% { opacity: 1; scale: 1.18; }
-  100% { opacity: 1; scale: 1; }
-}
-
-@keyframes rouletteTextPop {
-  0% { opacity: .25; scale: .62; }
-  68% { opacity: 1; scale: 1.22; }
-  100% { opacity: 1; scale: 1; }
-}
-
-@keyframes rouletteWinRing {
-  0% { opacity: .9; scale: .9; }
-  100% { opacity: .18; scale: 1.08; }
+@keyframes rouletteResultReveal {
+  from { opacity: 0; transform: scale(.9); }
+  to { opacity: 1; transform: scale(1); }
 }
