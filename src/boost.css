@@ -91,7 +91,7 @@
 .boost-transaction-heading img { width: 84px; height: auto; margin-top: 8px; }
 .ds-theme[data-theme="dark"] .boost-transaction-heading img { filter: invert(1); }
 .boost-transaction-form { position: relative; display: grid; gap: 14px; margin-top: 22px; }
-.boost-amount-card { min-height: 158px; display: flex; flex-direction: column; justify-content: space-between; padding: 21px 20px; border: 1px solid var(--ds-color-border-soft); border-radius: 17px; background: var(--ds-color-surface); }
+.boost-amount-card { min-height: 158px; display: flex; flex-direction: column; justify-content: space-between; padding: 21px 20px; border: 1px solid var(--ds-color-border-soft); border-radius: 17px; background: var(--ds-color-surface); transition: border-color .22s ease,background .22s ease,box-shadow .22s ease; }
 .boost-amount-meta { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .boost-amount-meta strong { font-size: .77rem; }
 .boost-amount-meta span { color: var(--ds-color-text-muted); font-size: .75rem; }
@@ -170,6 +170,7 @@
   .boost-activity:hover .boost-activity-icon { color: var(--ds-brand-indigo); background: linear-gradient(135deg,rgba(121,56,251,.11),rgba(73,201,244,.13),rgba(102,243,172,.16)); transform: scale(1.04); }
   .boost-activity-action a:hover, .boost-activity-action button:hover { color: var(--ds-brand-indigo); }
   .boost-activity-action a:hover svg, .boost-activity-action button:hover svg { transform: translateX(3px); }
+  .boost-amount-card:hover, .boost-amount-card:focus-within { border-color: var(--ds-color-text); background: linear-gradient(118deg,color-mix(in srgb,var(--ds-brand-indigo) 11%,var(--ds-color-surface)),color-mix(in srgb,var(--ds-brand-cyan) 9%,var(--ds-color-surface)) 58%,color-mix(in srgb,var(--ds-brand-mint) 10%,var(--ds-color-surface))); box-shadow: inset 0 1px rgba(255,255,255,.3),0 8px 24px color-mix(in srgb,var(--ds-color-text) 7%,transparent); }
   .boost-token-select:hover { border-color: color-mix(in srgb,var(--ds-brand-cyan) 52%,var(--ds-color-border)); background: color-mix(in srgb,var(--ds-color-raised) 90%,var(--ds-brand-cyan) 10%); transform: translateY(-1px); box-shadow: 0 7px 18px color-mix(in srgb,var(--ds-brand-cyan) 13%,transparent); }
   .boost-route-details:hover { border-color: color-mix(in srgb,var(--ds-brand-indigo) 38%,var(--ds-color-border)); color: var(--ds-color-text); background: color-mix(in srgb,var(--ds-color-surface) 72%,transparent); transform: translateY(-1px); }
   .boost-connect-wallet:hover, .roulette-control button:not(:disabled):hover, .yapping-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px color-mix(in srgb,var(--ds-color-text) 18%,transparent); filter: brightness(1.06); }
@@ -223,7 +224,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .boost-mode-tabs button, .boost-activity, .boost-activity-icon, .boost-activity-action a, .boost-activity-action button, .boost-activity-action svg, .boost-token-select, .boost-route-details, .boost-connect-wallet, .boost-connect-wallet svg, .roulette-control button, .roulette-control button svg, .yapping-cta, .yapping-cta svg { transition: none !important; }
+  .boost-mode-tabs button, .boost-activity, .boost-activity-icon, .boost-activity-action a, .boost-activity-action button, .boost-activity-action svg, .boost-amount-card, .boost-token-select, .boost-route-details, .boost-connect-wallet, .boost-connect-wallet svg, .roulette-control button, .roulette-control button svg, .yapping-cta, .yapping-cta svg { transition: none !important; }
   .roulette-wheel { transition-duration: .01ms; }
   .roulette-stage::before, .roulette-pointer::before, .roulette-center, .roulette-spin-label, .premium-segment, .premium-segment-trace, .roulette-wheel-number text { animation: none !important; }
 }
