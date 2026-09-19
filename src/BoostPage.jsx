@@ -53,7 +53,7 @@ export default function BoostPage() {
     if (spinCount >= 1 || isSpinning) return
     const rewardIndex = Math.floor(Math.random() * wheelRewards.length)
     const reward = wheelRewards[rewardIndex]
-    const landingAngle = 360 - (rewardIndex * 36 + 18)
+    const landingAngle = 360 - rewardIndex * 36
     const finalAngle = 1800 + landingAngle
     setSpinPhase('spinning')
     setSpinAngle(finalAngle + 9)
@@ -111,6 +111,7 @@ export default function BoostPage() {
               </div>
 
               <div className="roulette-stage" data-phase={spinPhase} data-result={spinResult ? 'true' : 'false'}>
+                <span className="roulette-lights" aria-hidden="true">{Array.from({ length: 20 }, (_, index) => <i key={index} style={{ '--light-index': index }} />)}</span>
                 <span className="roulette-pointer" aria-hidden="true" />
                 <div className="roulette-wheel" style={{ transform: `rotate(${spinAngle}deg)` }}>
                   {wheelRewards.map((reward, index) => <span className="roulette-label" key={reward} data-tier={reward >= 80 ? 'top' : reward >= 50 ? 'high' : 'base'} data-selected={spinResult === reward ? 'true' : 'false'} style={{ '--wheel-index': index }}><b>{reward}</b></span>)}
