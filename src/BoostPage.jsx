@@ -10,8 +10,8 @@ const wheelPoint = (radius, angle) => {
 }
 
 const wheelSegmentPath = index => {
-  const startAngle = index * 36 - 18 + 1.35
-  const endAngle = index * 36 + 18 - 1.35
+  const startAngle = index * 36 - 18 + .72
+  const endAngle = index * 36 + 18 - .72
   const [outerStartX, outerStartY] = wheelPoint(218, startAngle)
   const [outerEndX, outerEndY] = wheelPoint(218, endAngle)
   const [innerEndX, innerEndY] = wheelPoint(96, endAngle)
@@ -34,10 +34,10 @@ function RouletteWheelArt({ selectedReward }) {
       <defs>
         <radialGradient id="premium-wheel-body" cx="38%" cy="30%" r="72%"><stop stopColor="#22204b"/><stop offset=".48" stopColor="#0c1024"/><stop offset="1" stopColor="#050713"/></radialGradient>
         <linearGradient id="premium-wheel-ring" x1="68" y1="54" x2="430" y2="444" gradientUnits="userSpaceOnUse"><stop stopColor="#8e5dff"/><stop offset=".23" stopColor="#4dd7ff"/><stop offset=".52" stopColor="#6bf1c2"/><stop offset=".78" stopColor="#5c6fff"/><stop offset="1" stopColor="#c15dff"/></linearGradient>
-        <linearGradient id="premium-segment-violet" x1="210" y1="70" x2="292" y2="270" gradientUnits="userSpaceOnUse"><stop stopColor="#7548ff"/><stop offset=".48" stopColor="#36247a"/><stop offset="1" stopColor="#171832"/></linearGradient>
-        <linearGradient id="premium-segment-cyan" x1="205" y1="64" x2="296" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#22c8f1"/><stop offset=".5" stopColor="#126b9a"/><stop offset="1" stopColor="#101b36"/></linearGradient>
-        <linearGradient id="premium-segment-mint" x1="206" y1="66" x2="295" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#4ee5ba"/><stop offset=".48" stopColor="#177780"/><stop offset="1" stopColor="#101a31"/></linearGradient>
-        <linearGradient id="premium-segment-blue" x1="208" y1="62" x2="294" y2="280" gradientUnits="userSpaceOnUse"><stop stopColor="#4e8cff"/><stop offset=".5" stopColor="#2847a4"/><stop offset="1" stopColor="#14172f"/></linearGradient>
+        <linearGradient id="premium-segment-violet" x1="210" y1="70" x2="292" y2="270" gradientUnits="userSpaceOnUse"><stop stopColor="#5f55d8"/><stop offset=".46" stopColor="#302b70"/><stop offset="1" stopColor="#16182d"/></linearGradient>
+        <linearGradient id="premium-segment-cyan" x1="205" y1="64" x2="296" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#349cc2"/><stop offset=".48" stopColor="#205d7a"/><stop offset="1" stopColor="#111b31"/></linearGradient>
+        <linearGradient id="premium-segment-mint" x1="206" y1="66" x2="295" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#3a9995"/><stop offset=".48" stopColor="#205e66"/><stop offset="1" stopColor="#111a2d"/></linearGradient>
+        <linearGradient id="premium-segment-blue" x1="208" y1="62" x2="294" y2="280" gradientUnits="userSpaceOnUse"><stop stopColor="#496fc2"/><stop offset=".5" stopColor="#293f83"/><stop offset="1" stopColor="#15172d"/></linearGradient>
         <linearGradient id="premium-segment-winner" x1="202" y1="48" x2="301" y2="283" gradientUnits="userSpaceOnUse"><stop stopColor="#8dffe1"/><stop offset=".22" stopColor="#46dcf7"/><stop offset=".57" stopColor="#596cf5"/><stop offset="1" stopColor="#211947"/></linearGradient>
         <linearGradient id="premium-segment-gloss" x1="250" y1="32" x2="250" y2="238" gradientUnits="userSpaceOnUse"><stop stopColor="#fff" stopOpacity=".42"/><stop offset=".28" stopColor="#fff" stopOpacity=".06"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>
         <linearGradient id="premium-number-high" x1="230" y1="76" x2="272" y2="108" gradientUnits="userSpaceOnUse"><stop stopColor="#bfa8ff"/><stop offset=".48" stopColor="#6fe4ff"/><stop offset="1" stopColor="#82ffd0"/></linearGradient>
@@ -53,6 +53,7 @@ function RouletteWheelArt({ selectedReward }) {
         return <g key={reward}>
           <path className={`premium-segment tier-${tier}${selected ? ' is-selected' : ''}`} d={path} fill={`url(#premium-segment-${palettes[index]})`} filter="url(#premium-segment-shadow)" />
           <path className={`premium-segment-gloss${selected ? ' is-selected' : ''}`} d={path} fill="url(#premium-segment-gloss)" />
+          {selected && <path className="premium-segment-trace" d={path} pathLength="1" />}
           <g className={`roulette-wheel-number tier-${tier}${selected ? ' is-selected' : ''}`} transform={`rotate(${index * 36} 250 250)`}>
             <text x="250" y="92" textAnchor="middle" dominantBaseline="middle">{reward}</text>
           </g>
@@ -96,6 +97,7 @@ export default function BoostPage() {
   const [spinCount, setSpinCount] = useState(0)
   const [spinAngle, setSpinAngle] = useState(0)
   const [spinResult, setSpinResult] = useState(null)
+  const [resultVisible, setResultVisible] = useState(false)
   const [spinPhase, setSpinPhase] = useState('idle')
   const isSpinning = spinPhase !== 'idle'
 
@@ -107,6 +109,7 @@ export default function BoostPage() {
     const reward = wheelRewards[rewardIndex]
     const landingAngle = 360 - rewardIndex * 36
     const finalAngle = 1800 + landingAngle
+    setResultVisible(false)
     setSpinPhase('spinning')
     setSpinAngle(finalAngle + 5)
     window.setTimeout(() => {
@@ -116,8 +119,10 @@ export default function BoostPage() {
     window.setTimeout(() => {
       setSpinResult(reward)
       setSpinCount(1)
-      setSpinPhase('idle')
+      setSpinPhase('revealing')
     }, 2580)
+    window.setTimeout(() => setResultVisible(true), 2770)
+    window.setTimeout(() => setSpinPhase('idle'), 3060)
   }
 
   return (
@@ -162,20 +167,19 @@ export default function BoostPage() {
                 <p>Try your luck and win <strong>10–100 AP.</strong> Every result is fixed in 10-point increments.</p>
               </div>
 
-              <div className="roulette-stage" data-phase={spinPhase} data-result={spinResult ? 'true' : 'false'}>
-                <span className="roulette-lights" aria-hidden="true">{Array.from({ length: 20 }, (_, index) => <i key={index} style={{ '--light-index': index }} />)}</span>
+              <div className="roulette-stage" data-phase={spinPhase} data-result={resultVisible ? 'true' : 'false'}>
                 <span className="roulette-pointer" aria-hidden="true" />
                 <div className="roulette-wheel" style={{ transform: `rotate(${spinAngle}deg)` }}>
                   <RouletteWheelArt selectedReward={spinResult} />
                   <i className="roulette-center" aria-hidden="true" />
                 </div>
-                <div className="roulette-spin-label" aria-hidden="true"><strong>{String(spinResult ?? 0).padStart(2, '0')}<small>AP</small></strong></div>
+                <div className="roulette-spin-label" aria-hidden="true"><strong>{String(resultVisible ? spinResult : 0).padStart(2, '0')}<small>AP</small></strong></div>
               </div>
 
               <div className="roulette-control">
                 <span className="roulette-ticket" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8a2 2 0 0 0 0 4v4h16v-4a2 2 0 0 0 0-4V4H4v4Z" /></svg></span>
                 <div><small>Remaining spins</small><strong>{1 - spinCount} <b>/ 1</b></strong><span>Resets every day at 00:00 UTC</span></div>
-                <button className={spinResult ? 'is-complete' : ''} type="button" onClick={spin} disabled={spinCount >= 1 || isSpinning}>{isSpinning ? 'Spinning…' : spinResult ? `Won +${spinResult} AP` : 'Spin now'}<ArrowIcon /></button>
+                <button className={resultVisible ? 'is-complete' : ''} type="button" onClick={spin} disabled={spinCount >= 1 || isSpinning}>{isSpinning ? 'Spinning…' : spinResult ? `Won +${spinResult} AP` : 'Spin now'}<ArrowIcon /></button>
               </div>
               <p className="roulette-footnote"><i>i</i> Rewards are added to your Ammora Points instantly.</p>
             </article>
