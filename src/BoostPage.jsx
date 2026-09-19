@@ -27,6 +27,57 @@ function PointIcon() {
   return <svg viewBox="0 0 58 58" aria-hidden="true"><defs><linearGradient id="point-icon-gradient" x1="10" y1="8" x2="49" y2="51" gradientUnits="userSpaceOnUse"><stop stopColor="#7938fb"/><stop offset=".5" stopColor="#666dfb"/><stop offset="1" stopColor="#49c9f4"/></linearGradient></defs><path fill="url(#point-icon-gradient)" stroke="none" d="M32.7 7 16.8 31.2h10.7L24.8 51l16.4-25H30.4L32.7 7Z"/></svg>
 }
 
+function TokenBadge({ token }) {
+  if (token === 'ETH') return <span className="boost-token-icon is-eth" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2-6 10 6 3.5 6-3.5L12 2Zm-6 11.6L12 22l6-8.4-6 3.5-6-3.5Z" /></svg></span>
+  if (token === 'GIWA') return <span className="boost-token-icon is-giwa" aria-hidden="true">G</span>
+  return <span className="boost-token-icon is-ammo" aria-hidden="true">A</span>
+}
+
+function TransactionAmountCard({ label, balance, amount, token, network }) {
+  return (
+    <div className="boost-amount-card">
+      <div className="boost-amount-meta"><strong>{label}</strong><span>{balance}</span></div>
+      <div className="boost-amount-row">
+        <strong>{amount}</strong>
+        <button type="button" className="boost-token-select" aria-label={`Select ${token} token`}>
+          <TokenBadge token={token} />
+          <span><b>{token}</b>{network && <small>{network}</small>}</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 6 5 5 5-5" /></svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function BoostTransactionPanel({ mode }) {
+  const isBridge = mode === 'bridge'
+  const receiveToken = isBridge ? 'ETH' : 'AMMO'
+  const receiveAmount = isBridge ? '0.9996' : '4,284.22'
+  const summary = isBridge
+    ? [['Route', 'Ethereum Sepolia → GIWA Sepolia'], ['Estimated receive', '0.9996 ETH'], ['Network fee', '0.0004 ETH']]
+    : [['Quote', 'Best available route'], ['Rate', '1 ETH = 4,284.22 AMMO'], ['Minimum received', '4,262.7989 AMMO'], ['Price impact', '< 0.01%']]
+
+  return (
+    <div className="boost-transaction-view" role="tabpanel">
+      <div className="boost-transaction-heading">
+        <div><span>{isBridge ? '+50 AP mission' : '+10 AP per swap'}</span><h2>{isBridge ? 'Bridge to GIWA.' : 'Swap on Ammora.'}</h2><p>{isBridge ? 'Move ETH from Ethereum Sepolia to GIWA Sepolia.' : 'Swap ETH for an Ammora testnet token.'}</p></div>
+        <img src={`${import.meta.env.BASE_URL}giwa-black.svg`} alt="GIWA" />
+      </div>
+      <div className="boost-transaction-form">
+        <TransactionAmountCard label="You pay" balance="Balance 6.842 ETH" amount="1" token="ETH" network={isBridge ? 'Ethereum Sepolia' : null} />
+        <span className="boost-direction-button" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 3v13m-5-5 5 5 5-5" /></svg></span>
+        <TransactionAmountCard label="You receive" balance={isBridge ? 'GIWA destination' : 'Balance 18,420 AMMO'} amount={receiveAmount} token={receiveToken} network={isBridge ? 'GIWA Sepolia' : null} />
+      </div>
+      <dl className="boost-quote-list">
+        {summary.map(([label, value], index) => <div key={label}><dt>{label}</dt><dd className={!isBridge && index === 3 ? 'is-positive' : ''}>{value}</dd></div>)}
+      </dl>
+      <button className="boost-route-details" type="button"><span><svg viewBox="0 0 20 20"><path d="M4 6h12M7 3v6M4 14h12m-3-3v6" /></svg>{isBridge ? 'Bridge transaction details' : 'Route & transaction details'}</span><svg viewBox="0 0 16 16"><path d="m3 6 5 5 5-5" /></svg></button>
+      <button className="boost-connect-wallet" type="button">Connect wallet <ArrowIcon /></button>
+      <p className="boost-signing-note"><span>✓</span>{isBridge ? 'Direction and network fee are checked again before signing.' : 'Minimum received and route are checked again before signing.'}</p>
+    </div>
+  )
+}
+
 function RouletteWheelArt({ selectedReward }) {
   const palettes = ['violet','cyan','mint','blue','violet','cyan','mint','blue','violet','violet']
   return (
@@ -75,7 +126,7 @@ function ActivityIcon({ type }) {
   return <svg viewBox="0 0 20 20" aria-hidden="true"><path d={paths[type]} /></svg>
 }
 
-function BoostActivity({ icon, title, copy, progress, reward, note, href, cta }) {
+function BoostActivity({ icon, title, copy, progress, reward, note, href, cta, onSelect }) {
   return (
     <article className="boost-activity">
       <span className="boost-activity-icon"><ActivityIcon type={icon} /></span>
@@ -86,7 +137,7 @@ function BoostActivity({ icon, title, copy, progress, reward, note, href, cta })
       </div>
       <div className="boost-activity-action">
         <b>{reward}</b>
-        <a href={href}>{cta}<ArrowIcon /></a>
+        {onSelect ? <button type="button" onClick={onSelect}>{cta}<ArrowIcon /></button> : <a href={href}>{cta}<ArrowIcon /></a>}
       </div>
     </article>
   )
@@ -99,9 +150,15 @@ export default function BoostPage() {
   const [spinResult, setSpinResult] = useState(null)
   const [resultVisible, setResultVisible] = useState(false)
   const [spinPhase, setSpinPhase] = useState('idle')
+  const [activeBoostMode, setActiveBoostMode] = useState('roulette')
   const isSpinning = spinPhase !== 'idle'
 
   const siteBase = useMemo(() => window.location.hostname.endsWith('github.io') ? '/ammora-landing' : '', [])
+
+  const selectBoostMode = mode => {
+    setActiveBoostMode(mode)
+    window.requestAnimationFrame(() => document.getElementById('boost-main-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
 
   const spin = () => {
     if (spinCount >= 1 || isSpinning) return
@@ -160,7 +217,14 @@ export default function BoostPage() {
           </section>
 
           <section className="boost-grid">
-            <article id="roulette" className="roulette-panel">
+            <article id="boost-main-panel" className={`roulette-panel${activeBoostMode !== 'roulette' ? ' is-transaction' : ''}`}>
+              <div className="boost-mode-tabs" role="tablist" aria-label="Boost activity">
+                <button type="button" role="tab" aria-selected={activeBoostMode === 'roulette'} onClick={() => selectBoostMode('roulette')}>Roulette</button>
+                <button type="button" role="tab" aria-selected={activeBoostMode === 'bridge'} onClick={() => selectBoostMode('bridge')}>Bridge <span>+50 AP</span></button>
+                <button type="button" role="tab" aria-selected={activeBoostMode === 'swap'} onClick={() => selectBoostMode('swap')}>Swap <span>+10 AP</span></button>
+              </div>
+
+              {activeBoostMode === 'roulette' ? <>
               <div className="roulette-heading">
                 <span>Daily boost</span>
                 <h2>Spin the roulette.</h2>
@@ -182,14 +246,15 @@ export default function BoostPage() {
                 <button className={resultVisible ? 'is-complete' : ''} type="button" onClick={spin} disabled={spinCount >= 1 || isSpinning}>{isSpinning ? 'Spinning…' : spinResult ? `Won +${spinResult} AP` : 'Spin now'}<ArrowIcon /></button>
               </div>
               <p className="roulette-footnote"><i>i</i> Rewards are added to your Ammora Points instantly.</p>
+              </> : <BoostTransactionPanel mode={activeBoostMode} />}
             </article>
 
             <aside className="boost-activities-panel">
               <div className="boost-activities-head"><h2>More boost activities</h2><p>Complete these activities to earn extra points during the event.</p></div>
               <div className="boost-activity-list">
-                <BoostActivity icon="roulette" title="Roulette" progress={`${spinCount} / 1`} copy="Spin once per day for a guaranteed reward." note="Fixed in 10-point increments" reward="10–100 AP" href="#roulette" cta="Spin roulette" />
-                <BoostActivity icon="bridge" title="Bridge" progress="0 / 1" copy="Bridge ETH to GIWA." note="Eligible direction · ETH → GIWA only" reward="+50 AP" href={`${siteBase}/#/bridge`} cta="Open Bridge" />
-                <BoostActivity icon="swap" title="Swap" progress="0 / 10" copy="Swap ETH for any Ammora testnet token." note="Up to 10 verified swaps" reward="+10 AP each" href={`${siteBase}/#/swap`} cta="Go to Swap" />
+                <BoostActivity icon="roulette" title="Roulette" progress={`${spinCount} / 1`} copy="Spin once per day for a guaranteed reward." note="Fixed in 10-point increments" reward="10–100 AP" cta="Spin roulette" onSelect={() => selectBoostMode('roulette')} />
+                <BoostActivity icon="bridge" title="Bridge" progress="0 / 1" copy="Bridge ETH to GIWA." note="Eligible direction · ETH → GIWA only" reward="+50 AP" cta="Open Bridge" onSelect={() => selectBoostMode('bridge')} />
+                <BoostActivity icon="swap" title="Swap" progress="0 / 10" copy="Swap ETH for any Ammora testnet token." note="Up to 10 verified swaps" reward="+10 AP each" cta="Open Swap" onSelect={() => selectBoostMode('swap')} />
               </div>
 
               <article className="yapping-card">
