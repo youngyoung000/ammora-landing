@@ -44,12 +44,11 @@
 .premium-segment { stroke: rgba(174,221,255,.3); stroke-width: 1.4; transition: filter .35s ease,opacity .35s ease; }
 .premium-segment-gloss { opacity: .66; pointer-events: none; mix-blend-mode: screen; transition: opacity .35s ease; }
 .premium-segment-gloss.is-selected { opacity: .92; }
-.premium-segment.tier-max { fill: url(#premium-segment-jackpot); stroke: rgba(137,255,224,.88); stroke-width: 2.2; filter: drop-shadow(0 0 7px rgba(73,201,244,.42)); }
 .premium-segment.is-selected { fill: url(#premium-segment-winner); stroke: #e8ffff; stroke-width: 3; filter: drop-shadow(0 0 11px rgba(73,201,244,.88)); animation: rouletteSegmentReveal .48s ease-out both; }
 .roulette-wheel-number text { fill: #eaf1ff; stroke: none; font-family: var(--ds-font-heading); font-size: 21px; font-weight: 850; letter-spacing: -.7px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.72)); }
 .roulette-wheel-number.tier-high text { fill: url(#premium-number-high); font-size: 24px; font-weight: 900; }
 .roulette-wheel-number.tier-top text { fill: url(#premium-number-high); font-size: 27px; font-weight: 950; filter: drop-shadow(0 0 7px rgba(73,201,244,.48)); }
-.roulette-wheel-number.tier-max text { fill: #fff; font-size: 30px; font-weight: 950; filter: drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 11px rgba(73,201,244,.75)); }
+.roulette-wheel-number.tier-max text { fill: url(#premium-number-high); font-size: 28px; font-weight: 950; filter: drop-shadow(0 0 7px rgba(73,201,244,.48)); }
 .roulette-wheel-number.is-selected text { fill: #fff; font-size: 27px; filter: drop-shadow(0 0 4px rgba(255,255,255,.82)) drop-shadow(0 0 12px rgba(73,201,244,.88)); animation: roulettePrizeReveal .46s ease-out both; }
 .roulette-wheel-number.tier-max.is-selected text { font-size: 29px; }
 .roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .34s; transition-timing-function: cubic-bezier(.2,.8,.3,1); }
