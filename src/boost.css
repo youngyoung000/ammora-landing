@@ -39,24 +39,29 @@
 .roulette-lights { position: absolute; z-index: 3; inset: 0; pointer-events: none; }
 .roulette-lights i { --light-angle: calc(var(--light-index) * 18deg); position: absolute; top: 50%; left: 50%; width: 7px; height: 7px; border: 1px solid color-mix(in srgb,#fff 86%,var(--ds-brand-cyan)); border-radius: 50%; background: var(--ds-brand-cyan); box-shadow: 0 0 5px #fff,0 0 10px var(--ds-brand-cyan),0 0 18px color-mix(in srgb,var(--ds-brand-mint) 72%,transparent); transform: translate(-50%,-50%) rotate(var(--light-angle)) translateY(clamp(-230px,-19.15vw,-151px)); }
 .roulette-lights i:nth-child(2n) { width: 5px; height: 5px; background: var(--ds-brand-mint); opacity: .82; }
-.roulette-wheel { position: relative; z-index: 1; width: 88%; height: 88%; border: 6px solid color-mix(in srgb,var(--ds-brand-cyan) 56%,var(--ds-color-border)); border-radius: 50%; background: conic-gradient(from -18deg,rgba(121,56,251,.2) 0deg 36deg,rgba(73,201,244,.24) 36deg 72deg,rgba(102,243,172,.27) 72deg 108deg,rgba(102,109,251,.21) 108deg 144deg,rgba(73,201,244,.27) 144deg 180deg,rgba(121,56,251,.19) 180deg 216deg,rgba(102,243,172,.25) 216deg 252deg,rgba(102,109,251,.25) 252deg 288deg,rgba(73,201,244,.2) 288deg 324deg,rgba(102,243,172,.25) 324deg 360deg); box-shadow: inset 0 0 0 4px color-mix(in srgb,var(--ds-color-raised) 78%,transparent),inset 0 0 32px color-mix(in srgb,var(--ds-brand-cyan) 12%,transparent),0 0 0 2px color-mix(in srgb,var(--ds-brand-violet) 44%,transparent),0 0 40px rgba(73,201,244,.28); transition: transform 2.2s cubic-bezier(.1,.68,.13,1); }
-.roulette-wheel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: repeating-conic-gradient(from -18deg,transparent 0deg 35.35deg,color-mix(in srgb,var(--ds-color-raised) 88%,transparent) 35.35deg 36deg); }
+.roulette-wheel { position: relative; z-index: 1; width: 88%; height: 88%; border-radius: 50%; background: #060814; box-shadow: 0 0 0 2px rgba(121,56,251,.42),0 0 45px rgba(73,201,244,.28),0 22px 42px rgba(8,10,24,.35); transition: transform 2.2s cubic-bezier(.1,.68,.13,1); }
+.roulette-wheel-art { width: 100%; height: 100%; overflow: visible; }
+.premium-segment { stroke: rgba(174,221,255,.3); stroke-width: 1.4; transition: filter .35s ease,opacity .35s ease; }
+.premium-segment-gloss { pointer-events: none; mix-blend-mode: screen; }
+.premium-segment.is-selected { stroke: #d6fbff; stroke-width: 3; filter: url(#premium-selected-glow); }
+.roulette-wheel-number rect { opacity: 0; filter: url(#premium-selected-glow); }
+.roulette-wheel-number text { fill: #eaf1ff; stroke: none; font-family: var(--ds-font-heading); font-size: 21px; font-weight: 850; letter-spacing: -.7px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.72)); }
+.roulette-wheel-number.tier-high text { fill: url(#premium-number-high); font-size: 24px; font-weight: 900; }
+.roulette-wheel-number.tier-top text { fill: url(#premium-number-high); font-size: 27px; font-weight: 950; filter: drop-shadow(0 0 7px rgba(73,201,244,.48)); }
+.roulette-wheel-number.is-selected rect { opacity: 1; animation: rouletteRewardPop .62s cubic-bezier(.2,1.65,.3,1) both; }
+.roulette-wheel-number.is-selected text { fill: #fff; font-size: 25px; animation: rouletteTextPop .62s cubic-bezier(.2,1.65,.3,1) both; }
 .roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .46s; transition-timing-function: cubic-bezier(.16,.9,.28,1.42); }
-.roulette-label { --wheel-angle: calc(var(--wheel-index) * 36deg); position: absolute; z-index: 1; top: 50%; left: 50%; min-width: 34px; min-height: 28px; display: grid; place-items: center; transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-148px,-12.35vw,-96px)); border-radius: var(--ds-radius-pill); color: color-mix(in srgb,var(--ds-color-text) 84%,var(--ds-brand-indigo)); }
-.roulette-label b { font-family: var(--ds-font-heading); font-size: clamp(.86rem,1.5vw,1.2rem); line-height: 1; }
-.roulette-label[data-tier="high"] b { font-size: clamp(.96rem,1.68vw,1.34rem); font-weight: 850; }
-.roulette-label[data-tier="top"] { color: var(--ds-brand-indigo); text-shadow: 0 2px 12px color-mix(in srgb,var(--ds-brand-cyan) 46%,transparent); }
-.roulette-label[data-tier="top"] b { font-size: clamp(1.08rem,1.84vw,1.48rem); font-weight: 900; }
-.roulette-label[data-selected="true"] { color: #fff; background: var(--ds-brand-gradient); box-shadow: 0 0 0 4px color-mix(in srgb,var(--ds-color-raised) 70%,transparent),0 7px 20px color-mix(in srgb,var(--ds-brand-indigo) 42%,transparent); animation: rouletteRewardPop .62s cubic-bezier(.2,1.65,.3,1) both; }
-.roulette-center { position: absolute; z-index: 2; inset: 35%; border: 5px solid color-mix(in srgb,var(--ds-brand-violet) 30%,var(--ds-color-raised)); border-radius: 50%; background: radial-gradient(circle at 38% 28%,color-mix(in srgb,#fff 92%,var(--ds-color-raised)),var(--ds-color-raised) 56%,color-mix(in srgb,var(--ds-brand-cyan) 13%,var(--ds-color-raised))); box-shadow: 0 9px 24px rgba(102,109,251,.25),inset 0 0 0 1px color-mix(in srgb,var(--ds-brand-cyan) 22%,transparent),inset -8px -10px 24px color-mix(in srgb,var(--ds-brand-indigo) 8%,transparent); }
-.roulette-pointer { position: absolute; z-index: 4; top: 2.8%; left: 50%; width: 42px; height: 48px; transform: translateX(-50%); border-radius: 9px 9px 22px 22px; background: linear-gradient(155deg,var(--ds-brand-violet),var(--ds-brand-indigo),var(--ds-brand-cyan)); clip-path: polygon(0 0,100% 0,50% 100%); filter: drop-shadow(0 4px 7px rgba(102,109,251,.38)); }
+.roulette-center { position: absolute; z-index: 2; inset: 35%; border: 3px solid rgba(118,101,255,.85); border-radius: 50%; background: radial-gradient(circle at 38% 27%,#24264c 0%,#101329 45%,#050713 100%); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.34),0 0 28px rgba(121,56,251,.46),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.13); }
+.roulette-pointer { position: absolute; z-index: 6; top: 1.2%; left: 50%; width: 56px; height: 64px; transform: translateX(-50%); background: linear-gradient(155deg,#17152e 0%,#7b4cff 48%,#2fd2ef 100%); clip-path: polygon(8% 0,92% 0,50% 100%); filter: drop-shadow(0 0 6px rgba(255,255,255,.62)) drop-shadow(0 0 15px rgba(121,56,251,.8)); }
+.roulette-pointer::before { content: ""; position: absolute; inset: 7px 10px 14px; background: linear-gradient(180deg,#fff 0%,#aef7ff 42%,#9b72ff 100%); clip-path: polygon(5% 0,95% 0,50% 100%); }
+.roulette-pointer::after { content: ""; position: absolute; top: 6px; left: 50%; width: 22px; height: 5px; transform: translateX(-50%); border-radius: 50%; background: rgba(255,255,255,.9); filter: blur(2px); }
 .roulette-spin-label { position: absolute; z-index: 5; inset: 39%; display: grid; place-content: center; text-align: center; pointer-events: none; }
-.roulette-spin-label strong { color: var(--ds-color-text-muted); font-family: var(--ds-font-heading); font-size: clamp(1.35rem,2.7vw,2rem); font-weight: 900; line-height: 1; letter-spacing: -.04em; }
+.roulette-spin-label strong { color: #b8c5e7; font-family: var(--ds-font-heading); font-size: clamp(1.35rem,2.7vw,2rem); font-weight: 900; line-height: 1; letter-spacing: -.04em; text-shadow: 0 2px 8px rgba(0,0,0,.8); }
 .roulette-spin-label strong small { margin-left: 2px; font-size: .42em; letter-spacing: 0; }
 .roulette-stage[data-phase="spinning"] .roulette-spin-label, .roulette-stage[data-phase="settling"] .roulette-spin-label { opacity: .38; transform: scale(.92); }
 .roulette-stage[data-phase="spinning"] .roulette-pointer { transform-origin: 50% 8%; animation: roulettePointerTick .13s ease-in-out infinite alternate; }
 .roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultPop .62s cubic-bezier(.2,1.65,.3,1) both; }
-.roulette-stage[data-result="true"] .roulette-spin-label strong { background: var(--ds-brand-gradient); background-clip: text; color: transparent; filter: drop-shadow(0 5px 14px color-mix(in srgb,var(--ds-brand-indigo) 24%,transparent)); }
+.roulette-stage[data-result="true"] .roulette-spin-label strong { background: linear-gradient(110deg,#b994ff 0%,#79a8ff 34%,#6fe4ff 68%,#83ffd2 100%); background-clip: text; color: transparent; filter: drop-shadow(0 0 8px rgba(73,201,244,.34)) drop-shadow(0 5px 14px rgba(102,109,251,.28)); }
 .roulette-stage[data-result="true"]::before { animation: rouletteWinRing 1.15s ease-out both; }
 
 .roulette-control { min-height: 96px; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--ds-color-border); border-radius: 16px; }
@@ -117,7 +122,6 @@
   .boost-nav-inner { grid-template-columns: 1fr auto; }
   .boost-hero { grid-template-columns: 1fr; gap: 28px; }
   .boost-grid { grid-template-columns: 1fr; }
-  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-154px,-27vw,-100px)); }
   .roulette-lights i { transform: translate(-50%,-50%) rotate(var(--light-angle)) translateY(clamp(-232px,-42vw,-153px)); }
 }
 
@@ -136,7 +140,6 @@
   .roulette-panel, .boost-activities-panel { padding: 20px; }
   .roulette-heading h2 { font-size: 1.8rem; }
   .roulette-stage { width: calc(100% + 10px); margin-left: -5px; }
-  .roulette-label { transform: translate(-50%,-50%) rotate(var(--wheel-angle)) translateY(clamp(-112px,-27vw,-77px)); }
   .roulette-lights i { transform: translate(-50%,-50%) rotate(var(--light-angle)) translateY(clamp(-152px,-39vw,-118px)); }
   .roulette-control { grid-template-columns: 42px 1fr; }
   .roulette-ticket { width: 42px; height: 42px; }
@@ -152,7 +155,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .roulette-wheel { transition-duration: .01ms; }
-  .roulette-pointer, .roulette-spin-label, .roulette-label { animation: none !important; }
+  .roulette-pointer, .roulette-spin-label, .roulette-wheel-number rect, .roulette-wheel-number text { animation: none !important; }
 }
 
 @keyframes roulettePointerTick {
@@ -169,6 +172,12 @@
 @keyframes rouletteRewardPop {
   0% { opacity: .4; scale: .7; }
   68% { opacity: 1; scale: 1.18; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes rouletteTextPop {
+  0% { opacity: .25; scale: .62; }
+  68% { opacity: 1; scale: 1.22; }
   100% { opacity: 1; scale: 1; }
 }
 
