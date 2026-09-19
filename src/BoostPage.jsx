@@ -38,11 +38,11 @@ function RouletteWheelArt({ selectedReward }) {
         <linearGradient id="premium-segment-cyan" x1="205" y1="64" x2="296" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#22c8f1"/><stop offset=".5" stopColor="#126b9a"/><stop offset="1" stopColor="#101b36"/></linearGradient>
         <linearGradient id="premium-segment-mint" x1="206" y1="66" x2="295" y2="278" gradientUnits="userSpaceOnUse"><stop stopColor="#4ee5ba"/><stop offset=".48" stopColor="#177780"/><stop offset="1" stopColor="#101a31"/></linearGradient>
         <linearGradient id="premium-segment-blue" x1="208" y1="62" x2="294" y2="280" gradientUnits="userSpaceOnUse"><stop stopColor="#4e8cff"/><stop offset=".5" stopColor="#2847a4"/><stop offset="1" stopColor="#14172f"/></linearGradient>
+        <linearGradient id="premium-segment-jackpot" x1="202" y1="48" x2="301" y2="283" gradientUnits="userSpaceOnUse"><stop stopColor="#89ffe0"/><stop offset=".24" stopColor="#37d9f4"/><stop offset=".62" stopColor="#5268ef"/><stop offset="1" stopColor="#1a163b"/></linearGradient>
+        <linearGradient id="premium-segment-winner" x1="202" y1="48" x2="301" y2="283" gradientUnits="userSpaceOnUse"><stop stopColor="#8dffe1"/><stop offset=".22" stopColor="#46dcf7"/><stop offset=".57" stopColor="#596cf5"/><stop offset="1" stopColor="#211947"/></linearGradient>
         <linearGradient id="premium-segment-gloss" x1="250" y1="32" x2="250" y2="238" gradientUnits="userSpaceOnUse"><stop stopColor="#fff" stopOpacity=".42"/><stop offset=".28" stopColor="#fff" stopOpacity=".06"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient>
-        <linearGradient id="premium-selected" x1="222" y1="72" x2="280" y2="108" gradientUnits="userSpaceOnUse"><stop stopColor="#7938fb"/><stop offset=".48" stopColor="#49c9f4"/><stop offset="1" stopColor="#66f3ac"/></linearGradient>
         <linearGradient id="premium-number-high" x1="230" y1="76" x2="272" y2="108" gradientUnits="userSpaceOnUse"><stop stopColor="#bfa8ff"/><stop offset=".48" stopColor="#6fe4ff"/><stop offset="1" stopColor="#82ffd0"/></linearGradient>
         <filter id="premium-segment-shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#000" floodOpacity=".55"/></filter>
-        <filter id="premium-selected-glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
       <circle cx="250" cy="250" r="244" fill="url(#premium-wheel-body)" stroke="#080a16" strokeWidth="8" />
       <circle cx="250" cy="250" r="232" fill="none" stroke="url(#premium-wheel-ring)" strokeWidth="9" />
@@ -52,10 +52,9 @@ function RouletteWheelArt({ selectedReward }) {
         const tier = reward === 100 ? 'max' : reward >= 80 ? 'top' : reward >= 50 ? 'high' : 'base'
         const selected = selectedReward === reward
         return <g key={reward}>
-          <path className={`premium-segment${selected ? ' is-selected' : ''}`} d={path} fill={`url(#premium-segment-${palettes[index]})`} filter="url(#premium-segment-shadow)" />
-          <path className="premium-segment-gloss" d={path} fill="url(#premium-segment-gloss)" />
+          <path className={`premium-segment tier-${tier}${selected ? ' is-selected' : ''}`} d={path} fill={`url(#premium-segment-${palettes[index]})`} filter="url(#premium-segment-shadow)" />
+          <path className={`premium-segment-gloss${selected ? ' is-selected' : ''}`} d={path} fill="url(#premium-segment-gloss)" />
           <g className={`roulette-wheel-number tier-${tier}${selected ? ' is-selected' : ''}`} transform={`rotate(${index * 36} 250 250)`}>
-            <rect x="220" y="73" width="60" height="36" rx="18" fill="url(#premium-selected)" />
             <text x="250" y="92" textAnchor="middle" dominantBaseline="middle">{reward}</text>
           </g>
         </g>

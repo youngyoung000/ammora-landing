@@ -42,16 +42,15 @@
 .roulette-wheel { position: relative; z-index: 1; width: 88%; height: 88%; border-radius: 50%; background: #060814; box-shadow: 0 0 0 2px rgba(121,56,251,.42),0 0 45px rgba(73,201,244,.28),0 22px 42px rgba(8,10,24,.35); transition: transform 2.2s cubic-bezier(.1,.68,.13,1); }
 .roulette-wheel-art { width: 100%; height: 100%; overflow: visible; }
 .premium-segment { stroke: rgba(174,221,255,.3); stroke-width: 1.4; transition: filter .35s ease,opacity .35s ease; }
-.premium-segment-gloss { pointer-events: none; mix-blend-mode: screen; }
-.premium-segment.is-selected { stroke: #fff; stroke-width: 3; filter: drop-shadow(0 0 8px rgba(73,201,244,.82)); }
-.roulette-wheel-number rect { opacity: 0; filter: url(#premium-selected-glow); }
+.premium-segment-gloss { opacity: .66; pointer-events: none; mix-blend-mode: screen; transition: opacity .35s ease; }
+.premium-segment-gloss.is-selected { opacity: .92; }
+.premium-segment.tier-max { fill: url(#premium-segment-jackpot); stroke: rgba(137,255,224,.88); stroke-width: 2.2; filter: drop-shadow(0 0 7px rgba(73,201,244,.42)); }
+.premium-segment.is-selected { fill: url(#premium-segment-winner); stroke: #e8ffff; stroke-width: 3; filter: drop-shadow(0 0 11px rgba(73,201,244,.88)); animation: rouletteSegmentReveal .48s ease-out both; }
 .roulette-wheel-number text { fill: #eaf1ff; stroke: none; font-family: var(--ds-font-heading); font-size: 21px; font-weight: 850; letter-spacing: -.7px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.72)); }
 .roulette-wheel-number.tier-high text { fill: url(#premium-number-high); font-size: 24px; font-weight: 900; }
 .roulette-wheel-number.tier-top text { fill: url(#premium-number-high); font-size: 27px; font-weight: 950; filter: drop-shadow(0 0 7px rgba(73,201,244,.48)); }
-.roulette-wheel-number.tier-max rect { opacity: 1; fill: #fff; filter: drop-shadow(0 0 10px rgba(73,201,244,.52)); }
-.roulette-wheel-number.tier-max text { fill: #080a14; font-size: 29px; font-weight: 950; filter: none; }
-.roulette-wheel-number.is-selected rect { opacity: 1; fill: #fff; filter: drop-shadow(0 0 11px rgba(73,201,244,.72)); animation: roulettePrizeReveal .46s ease-out both; }
-.roulette-wheel-number.is-selected text { fill: #080a14; font-size: 26px; filter: none; animation: roulettePrizeReveal .46s ease-out both; }
+.roulette-wheel-number.tier-max text { fill: #fff; font-size: 30px; font-weight: 950; filter: drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 11px rgba(73,201,244,.75)); }
+.roulette-wheel-number.is-selected text { fill: #fff; font-size: 27px; filter: drop-shadow(0 0 4px rgba(255,255,255,.82)) drop-shadow(0 0 12px rgba(73,201,244,.88)); animation: roulettePrizeReveal .46s ease-out both; }
 .roulette-wheel-number.tier-max.is-selected text { font-size: 29px; }
 .roulette-stage[data-phase="settling"] .roulette-wheel { transition-duration: .34s; transition-timing-function: cubic-bezier(.2,.8,.3,1); }
 .roulette-center { position: absolute; z-index: 2; inset: 35%; border: 3px solid rgba(118,101,255,.85); border-radius: 50%; background: radial-gradient(circle at 38% 27%,#24264c 0%,#101329 45%,#050713 100%); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.34),0 0 28px rgba(121,56,251,.46),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.13); }
@@ -63,10 +62,10 @@
 .roulette-spin-label strong small { margin-left: 2px; font-size: .42em; letter-spacing: 0; }
 .roulette-stage[data-phase="spinning"] .roulette-spin-label, .roulette-stage[data-phase="settling"] .roulette-spin-label { opacity: .38; transform: scale(.92); }
 .roulette-stage[data-phase="spinning"] .roulette-pointer { transform-origin: 50% 8%; animation: roulettePointerTick .13s ease-in-out infinite alternate; }
-.roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultReveal .46s ease-out both; }
-.roulette-stage[data-result="true"] .roulette-spin-label strong { color: #fff; text-shadow: 0 0 10px rgba(73,201,244,.45),0 3px 10px rgba(0,0,0,.8); }
+.roulette-stage[data-result="true"] .roulette-spin-label { animation: rouletteResultReveal .4s cubic-bezier(.16,1,.3,1) both; }
+.roulette-stage[data-result="true"] .roulette-spin-label strong { color: #fff; font-size: clamp(1.65rem,3vw,2.35rem); text-shadow: 0 0 10px rgba(73,201,244,.45),0 3px 10px rgba(0,0,0,.8); }
 .roulette-stage[data-result="true"] .roulette-spin-label strong small { color: #66f3ac; text-shadow: 0 0 8px rgba(102,243,172,.5); }
-.roulette-stage[data-result="true"] .roulette-center { border-color: rgba(111,228,255,.94); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.56),0 0 24px rgba(73,201,244,.42),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.16); transition: border-color .3s ease,box-shadow .3s ease; }
+.roulette-stage[data-result="true"] .roulette-center { border-color: rgba(111,228,255,.94); box-shadow: 0 0 0 5px rgba(9,11,28,.92),0 0 0 7px rgba(73,201,244,.56),0 0 24px rgba(73,201,244,.42),inset -12px -15px 28px rgba(0,0,0,.42),inset 6px 7px 16px rgba(111,228,255,.16); animation: rouletteCenterSettle .55s ease-out both; }
 
 .roulette-control { min-height: 96px; display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--ds-color-border); border-radius: 16px; }
 .roulette-ticket { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: var(--ds-color-surface); }
@@ -160,7 +159,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .roulette-wheel { transition-duration: .01ms; }
-  .roulette-pointer, .roulette-spin-label, .roulette-wheel-number rect, .roulette-wheel-number text { animation: none !important; }
+  .roulette-pointer, .roulette-center, .roulette-spin-label, .premium-segment, .roulette-wheel-number text { animation: none !important; }
 }
 
 @keyframes roulettePointerTick {
@@ -169,11 +168,22 @@
 }
 
 @keyframes roulettePrizeReveal {
-  from { opacity: 0; scale: .9; }
+  from { opacity: .35; scale: .94; }
   to { opacity: 1; scale: 1; }
 }
 
+@keyframes rouletteSegmentReveal {
+  from { opacity: .72; filter: drop-shadow(0 0 2px rgba(73,201,244,.18)); }
+  to { opacity: 1; filter: drop-shadow(0 0 11px rgba(73,201,244,.88)); }
+}
+
 @keyframes rouletteResultReveal {
-  from { opacity: 0; transform: scale(.9); }
+  from { opacity: 0; transform: scale(.94); }
   to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rouletteCenterSettle {
+  0% { filter: brightness(1); }
+  28% { filter: brightness(1.34); }
+  100% { filter: brightness(1); }
 }
